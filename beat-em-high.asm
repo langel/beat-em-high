@@ -13,20 +13,49 @@ cart_start: subroutine
 	NES_INIT	; set up stack pointer, turn off PPU
         jsr WaitSync	; wait for VSYNC
         jsr ClearRAM	; clear RAM
-        jsr WaitSync	; wait for VSYNC (and PPU warmup)
 
 ; reset PPU address and scroll registers
         lda #0
-        sta PPU_ADDR
-        sta PPU_ADDR	; PPU addr = $0000
         sta PPU_SCROLL
         sta PPU_SCROLL  ; PPU scroll = $0000
 	jsr SetPalette	; set palette colors
+        
+        
+        ; Distressed Alien
+        lda #$50
+        sta tile_empty
+	PPU_SETADDR #$2086
+cut_scene_alien_main_draw: subroutine
+        lda #$00
+        sta temp00 ; pattern tile counter
+        ldx #$0f
+.alien_tile_loop
+	ldy #$f
+.alien_tile_row_loop
+	lda temp00
+	sta PPU_DATA
+        inc temp00
+	dey
+        bpl .alien_tile_row_loop
+        ; setup empty tile fill
+        ldy #$0f
+        lda tile_empty
+.alien_row_filler_loop
+	sta PPU_DATA
+	dey
+        bpl .alien_row_filler_loop
+	dex
+        bpl .alien_tile_loop
+        
+        
 ; activate PPU graphics
+        jsr WaitSync	; wait for VSYNC (and PPU warmup)
         lda #MASK_BG
         sta PPU_MASK 	; enable rendering
         lda #CTRL_NMI|#CTRL_BG_1000
         sta PPU_CTRL	; enable NMI
+        
+        
 .endless
 	jmp .endless	; endless loop
 
@@ -60,35 +89,12 @@ Palette:
 ;;;;; INTERRUPT HANDLERS
 
 nmi_handler: subroutine
-	lda $00
-        sta $00
 	SAVE_REGS
+        
+        lda #0
+        sta PPU_SCROLL
+        sta PPU_SCROLL  ; PPU scroll = $0000
 
-        ; Distressed Alien
-	PPU_SETADDR #$2086
-cut_scene_alien_main_draw: subroutine
-        lda #$00
-        sta temp00 ; pattern tile counter
-        ldx #$2f
-.alien_tile_loop
-	ldy #$f
-.alien_tile_row_loop
-	lda temp00
-	sta PPU_DATA
-        inc temp00
-	dey
-        bpl .alien_tile_row_loop
-        ; setup empty tile fill
-        ldy #$0f
-        lda #tile_empty
-.alien_row_filler_loop
-	sta PPU_DATA
-	dey
-        bpl .alien_row_filler_loop
-	dex
-        bpl .alien_tile_loop
-	lda $00
-        sta $00
 	RESTORE_REGS
 	rti
         
