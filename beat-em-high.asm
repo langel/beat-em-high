@@ -4,10 +4,34 @@
 
 
 ;;;;; NES CARTRIDGE HEADER
-
-	NES_HEADER 0,2,1,NES_MIRR_HORIZ ; mapper 0, 2 PRGs, 1 CHR
+	; mapper 0, 4 PRGs, 0 CHR
+	;NES_HEADER 0,4,0,NES_MIRR_HORIZ 
+MAPPER EQM 2
+        
+	seg Header
+	org $7ff0
+        ;NES\n header demarcation
+        byte $4e,$45,$53,$1a
+        ;NES_PRG_BANKS
+	byte 2 
+        ;NES_CHR_BANKS
+	byte 0 
+        ;NES_MIRRORING|(.NES_MAPPER<<4)
+	byte NES_MIRR_HORIZ | (MAPPER<<4) 
+        ;.NES_MAPPER&$f0
+	byte MAPPER & $f0 
+        ; reserved, set to zero
+	byte 0,0,0,0,0,0,0,0 
+        
+	seg Code
+	org $8000
+        
+;;;;; GRAPHX
+graphics_addr:
+	incbin "Winter_Chip_V.chr"
 
 ;;;;; START OF CODE
+	org $c000
 
 cart_start: subroutine
 	NES_INIT	; set up stack pointer, turn off PPU
@@ -20,8 +44,26 @@ cart_start: subroutine
         sta PPU_SCROLL  ; PPU scroll = $0000
 	jsr SetPalette	; set palette colors
         
+; graphx to chr ram
+	lda #<graphics_addr
+        sta temp00
+        lda #>graphics_addr
+        sta temp01
+        lda #$00
+        sta PPU_ADDR
+        sta PPU_ADDR
+        ldx #$20
+        ldy #$00
+.grafx_load_loop
+	lda (temp00),y
+        sta PPU_DATA
+        iny
+        bne .grafx_load_loop
+        inc temp01
+	dex
+        bne .grafx_load_loop
         
-        ; Distressed Alien
+; graphx on nametable
         lda #$50
         sta tile_empty
 	PPU_SETADDR #$2086
@@ -112,7 +154,4 @@ nmi_handler: subroutine
 	.word nmi_handler	; $fffe irq / brk
         
         
-;;;;; GRAPHX
-	org $010000
-	incbin "Winter_Chip_V.chr"
 
