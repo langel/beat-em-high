@@ -13,25 +13,35 @@ MAPPER EQM 2
         ;NES\n header demarcation
         byte $4e,$45,$53,$1a
         ;NES_PRG_BANKS
-	byte 2 
+	byte 4
         ;NES_CHR_BANKS
 	byte 0 
         ;NES_MIRRORING|(.NES_MAPPER<<4)
-	byte NES_MIRR_HORIZ | (MAPPER<<4) 
+	byte NES_MIRR_HORIZ | (MAPPER << 4) 
         ;.NES_MAPPER&$f0
 	byte MAPPER & $f0 
         ; reserved, set to zero
 	byte 0,0,0,0,0,0,0,0 
         
-	seg Code
+	seg CODE_BANK0
 	org $8000
+        rorg $8000
         
 ;;;;; GRAPHX
 graphics_addr:
 	incbin "Winter_Chip_V.chr"
 
 ;;;;; START OF CODE
-	org $c000
+	;org $14000
+	seg CODE_BANK1
+        org $c000
+        rorg $8000
+	seg CODE_BANK2
+        org $10000
+        rorg $8000
+	seg CODE_BANK3
+        org $14000
+        rorg $c000
 
 cart_start: subroutine
 	NES_INIT	; set up stack pointer, turn off PPU
@@ -43,6 +53,10 @@ cart_start: subroutine
         sta PPU_SCROLL
         sta PPU_SCROLL  ; PPU scroll = $0000
 	jsr SetPalette	; set palette colors
+        
+; reset unrom bank
+	lda #$0
+        sta $8000
         
 ; graphx to chr ram
 	lda #<graphics_addr
@@ -147,8 +161,9 @@ nmi_handler: subroutine
 
 ;;;;; CPU VECTORS
 
-	seg Vectors
-	org $fffa		; start at address $fffa
+	seg VECTORS
+	org $17ffa	
+        rorg $fffa ; start at address $fffa
        	.word nmi_handler	; $fffa vblank nmi
 	.word cart_start	; $fffc reset
 	.word nmi_handler	; $fffe irq / brk
