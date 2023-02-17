@@ -23,13 +23,14 @@ MAPPER EQM 2
         ; reserved, set to zero
 	byte 0,0,0,0,0,0,0,0 
         
+        
+;;;;; GRAPHX
 	seg CODE_BANK0
 	org $8000
         rorg $8000
-        
-;;;;; GRAPHX
 graphics_addr:
 	incbin "Winter_Chip_V.chr"
+; still 8kb on this bank
 
 ;;;;; START OF CODE
 	;org $14000
@@ -55,8 +56,7 @@ cart_start: subroutine
 	jsr SetPalette	; set palette colors
         
 ; reset unrom bank
-	lda #$0
-        sta $8000
+	BANK_CHANGE 0
         
 ; graphx to chr ram
 	lda #<graphics_addr

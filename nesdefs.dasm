@@ -131,6 +131,13 @@ NES_MIRR_QUAD	= 8
         lda #{1}
         sta PPU_DATA
         ENDM
+        
+;;;;; BANK_CHANGE <bank id> - UNROM specific
+
+	MAC BANK_CHANGE
+        lda #{1}
+        sta $8000
+        ENDM
 
 ;;;;; SAVE_REGS - save A/X/Y registers
 
