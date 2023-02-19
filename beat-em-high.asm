@@ -146,11 +146,29 @@ Palette:
 
 nmi_handler: subroutine
 	SAVE_REGS
+; enable NMI lockout
+	lda nmi_lockout
+        cmp #$00
+        beq .no_lock
+        jmp .nmi_end
+.no_lock
+        inc nmi_lockout
         
-        lda #0
+        lda scroll_x
         sta PPU_SCROLL
+        lda scroll_y
         sta PPU_SCROLL  ; PPU scroll = $0000
-
+        
+        dec scroll_x
+        
+        inc temp03
+        lda temp03
+        lsr
+        lsr
+        and #$01
+        
+        dec nmi_lockout
+.nmi_end
 	RESTORE_REGS
 	rti
         
