@@ -30,6 +30,8 @@ MAPPER EQM 2
         rorg $8000
 graphics_addr:
 	incbin "Winter_Chip_V.chr"
+sprites_addr:
+        incbin "binny ponda.chr"
 ; still 8kb on this bank
 
 ;;;;; START OF CODE
@@ -103,11 +105,30 @@ cut_scene_alien_main_draw: subroutine
 	dex
         bpl .alien_tile_loop
         
+; load sprites into chr ram
+	lda #<sprites_addr
+        sta temp00
+        lda #>sprites_addr
+        sta temp01
+        lda #$00
+        sta PPU_ADDR
+        sta PPU_ADDR
+        ldx #$10
+        ldy #$00
+.sprites_load_loop
+	lda (temp00),y
+        sta PPU_DATA
+        iny
+        bne .sprites_load_loop
+        inc temp01
+	dex
+        bne .sprites_load_loop
+        
         
 ; activate PPU graphics
         jsr WaitSync	; wait for VSYNC (and PPU warmup)
-        lda #MASK_BG
-        sta PPU_MASK 	; enable rendering
+        lda #MASK_BG|MASK_SPR|MASK_SPR_CLIP|MASK_BG_CLIP
+        sta PPU_MASK	; enable rendering
         lda #CTRL_NMI|#CTRL_BG_1000
         sta PPU_CTRL	; enable NMI
         
@@ -132,7 +153,13 @@ SetPalette: subroutine
 ;;;;; CONSTANT DATA
 
 Palette:
-	hex 1f		;screen color
+	hex 0c1f2d00
+	hex 0c1f0111
+	hex 0c1f0111
+	hex 0c1f0111
+        hex 0c1f2437
+        hex 0c1f2130
+	hex 0c		;screen color
 	hex 01112100	;background 0
         hex 02122200	;background 1
         hex 02112100	;background 2
@@ -150,9 +177,13 @@ nmi_handler: subroutine
 	lda nmi_lockout
         cmp #$00
         beq .no_lock
-        jmp .nmi_end
+        jmp nmi_end
 .no_lock
         inc nmi_lockout
+        
+	; OAM DMA	513 cycles
+	lda #$02
+        sta PPU_OAM_DMA
         
         lda scroll_x
         sta PPU_SCROLL
@@ -167,14 +198,56 @@ nmi_handler: subroutine
         lsr
         and #$01
         
+binny_walk: subroutine
+	lda wtf
+        and #$07
+        bne .not_next
+        inc binny_cycle
+.not_next
+        lda binny_cycle
+        and #$01
+        asl
+        ldy #$00
+        jsr sprite_6_set_sprite
+        lda #$40
+        jsr sprite_6_set_attr
+        lda #$a0
+        jsr sprite_6_set_x_mirror
+        lda #$80
+        jsr sprite_6_set_y
+        
+ponda_walk: subroutine
+	lda wtf
+        and #$07
+        bne .not_next
+        inc ponda_cycle
+.not_next
+        lda ponda_cycle
+        and #$01
+        asl
+        clc
+        adc #$60
+        ldy #$18
+        jsr sprite_6_set_sprite
+        lda #$41
+        jsr sprite_6_set_attr
+        lda #$b8
+        jsr sprite_6_set_x_mirror
+        lda #$78
+        jsr sprite_6_set_y
+        
+        inc wtf
         dec nmi_lockout
-.nmi_end
+nmi_end:
 	RESTORE_REGS
 	rti
         
 ;;;;; COMMON SUBROUTINES
 
 	include "nesppu.dasm"
+        
+	include "sprites.asm"
+
         
 
 ;;;;; CPU VECTORS
