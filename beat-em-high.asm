@@ -29,7 +29,7 @@ MAPPER EQM 2
 	org $8000
         rorg $8000
 graphics_addr:
-	incbin "Winter_Chip_V.chr"
+	incbin "tiles.chr"
 sprites_addr:
         incbin "binny ponda.chr"
 ; still 8kb on this bank
@@ -105,31 +105,13 @@ cut_scene_alien_main_draw: subroutine
 	dex
         bpl .alien_tile_loop
         
-; load sprites into chr ram
-	lda #<sprites_addr
-        sta temp00
-        lda #>sprites_addr
-        sta temp01
-        lda #$00
-        sta PPU_ADDR
-        sta PPU_ADDR
-        ldx #$10
-        ldy #$00
-.sprites_load_loop
-	lda (temp00),y
-        sta PPU_DATA
-        iny
-        bne .sprites_load_loop
-        inc temp01
-	dex
-        bne .sprites_load_loop
         
         
 ; activate PPU graphics
         jsr WaitSync	; wait for VSYNC (and PPU warmup)
         lda #MASK_BG|MASK_SPR|MASK_SPR_CLIP|MASK_BG_CLIP
         sta PPU_MASK	; enable rendering
-        lda #CTRL_NMI|#CTRL_BG_1000
+        lda #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL	; enable NMI
         
         
