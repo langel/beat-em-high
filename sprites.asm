@@ -4,6 +4,15 @@ oam_ram_att	EQU $0202
 oam_ram_x	EQU $0203
 oam_ram_etc	EQU $0204
 
+sprites_clear: subroutine
+	lda #$ff
+        ldy #$00
+.loop
+	sta $0200,y
+        dey
+        bne .loop
+        rts
+
 sprite_4_set_palette: subroutine
 	; a = palette id
         ; y = oam ram offset

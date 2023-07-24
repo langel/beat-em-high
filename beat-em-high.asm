@@ -56,6 +56,7 @@ cart_start: subroutine
         sta PPU_SCROLL
         sta PPU_SCROLL  ; PPU scroll = $0000
 	jsr SetPalette	; set palette colors
+        jsr sprites_clear
         
 ; reset unrom bank
 	BANK_CHANGE 0
