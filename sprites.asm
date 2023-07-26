@@ -13,8 +13,8 @@ sprites_clear: subroutine
         bne .loop
         rts
 
-sprite_4_set_palette: subroutine
-	; a = palette id
+sprite_4_set_attr: subroutine
+	; a = attribute value
         ; y = oam ram offset
         sta oam_ram_att+$00,y
         sta oam_ram_att+$04,y

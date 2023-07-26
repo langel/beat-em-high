@@ -50,6 +50,61 @@ state_level_hud_init: subroutine
         bne .l4
         lda #$c0
         sta PPU_DATA
+; VERTICAL LINES
+	lda #$04
+        sta PPU_CTRL
+	ldx #$c2
+        PPU_SETADDR $2061
+        stx PPU_DATA
+        stx PPU_DATA
+        PPU_SETADDR $206e
+        stx PPU_DATA
+        stx PPU_DATA
+        PPU_SETADDR $2071
+        stx PPU_DATA
+        stx PPU_DATA
+        PPU_SETADDR $207e
+        stx PPU_DATA
+        stx PPU_DATA
+; HEALTH
+	lda #$00
+        sta PPU_CTRL
+	ldx #$d0
+        PPU_SETADDR $2085
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        PPU_SETADDR $2095
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+        stx PPU_DATA
+; BINNY
+        PPU_SETADDR $2065
+        lda #$e0
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        PPU_SETADDR $2075
+        lda #$e0
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
 	rts
         
         

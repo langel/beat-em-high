@@ -148,6 +148,28 @@ nmi_handler: subroutine
         inc scroll_n
 .same_nametable
 
+
+binny_head:
+        ldy #$28
+        lda #$06
+        jsr sprite_4_set_sprite
+        lda #$00
+        jsr sprite_4_set_attr
+        lda #$10
+        jsr sprite_4_set_x
+        lda #$18
+        jsr sprite_4_set_y
+pando_head:
+        ldy #$50
+        lda #$66
+        jsr sprite_4_set_sprite
+        lda #$01
+        jsr sprite_4_set_attr
+        lda #$90
+        jsr sprite_4_set_x
+        lda #$18
+        jsr sprite_4_set_y
+	
         
         
         
@@ -180,7 +202,7 @@ ponda_walk: subroutine
         asl
         clc
         adc #$60
-        ldy #$30
+        ldy #$38
         jsr sprite_6_set_sprite
         lda #$41
         jsr sprite_6_set_attr
