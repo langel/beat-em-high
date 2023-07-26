@@ -13,6 +13,7 @@ tile_empty byte
 
 scroll_x  byte
 scroll_y  byte
+scroll_n  byte
 
 binny_cycle byte
 ponda_cycle byte

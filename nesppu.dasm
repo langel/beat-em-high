@@ -21,9 +21,9 @@ ClearRAM: subroutine
         rts
 
 ; wait for VSYNC to start
-WaitSync:
+wait_sync:
 	bit PPU_STATUS
-	bpl WaitSync
+	bpl wait_sync
         rts
 
 ;;;;; RANDOM NUMBERS
@@ -61,4 +61,41 @@ ReadJoypadY
         dex		; X = X - 1
         bne .loop	; repeat if X is 0
         rts		; controller bits returned in A
+        
+        
+render_disable: subroutine
+        lda #$00
+        sta PPU_MASK
+        rts
+        
+render_enable: subroutine        
+	lda #MASK_BG|MASK_SPR|MASK_SPR_CLIP|MASK_BG_CLIP
+        sta PPU_MASK	; enable rendering
+        lda #CTRL_NMI|#CTRL_SPR_1000
+        sta PPU_CTRL	; enable NMI
+        rts
+        
+        
+; set palette colors
+SetPalette: subroutine
+; set PPU address to palette start
+	PPU_SETADDR $3f00
+        ldy #0
+.loop:
+	lda Palette,y	; lookup byte in ROM
+	sta PPU_DATA	; store byte to PPU data
+        iny		; Y = Y + 1
+        cpy #32		; is Y equal to 32?
+	bne .loop	; not yet, loop
+        rts		; return to caller
+        
+;;;;; CONSTANT DATA
+
+Palette:
+	hex 0c1f2d00
+	hex 0c1f0111
+	hex 0c1f0111
+	hex 0c1f0111
+        hex 0c1f2437
+        hex 0c1f2130
 
