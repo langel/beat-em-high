@@ -27,17 +27,24 @@ graphics_addr:
 	incbin "tiles.chr"		; 4k
 sprites_addr:			
 	incbin "binny ponda.chr"	; 4k
+        
 	seg CODE_BANK1
         org $c000
         rorg $8000
+        
 	seg CODE_BANK2
         org $10000
         rorg $8000
+	include "ftm_engine.asm"
+	nop
+        
 	seg CODE_BANK3
         org $14000
         rorg $c000
         
         
+	include "dpcm.asm"
+	nop
 	include "vectors.asm"
 	nop
 	include "state.asm"

@@ -149,6 +149,10 @@ nmi_handler: subroutine
 .same_nametable
 
 
+	BANK_CHANGE 2
+        jsr ftm_frame
+
+
 binny_head:
         ldy #$28
         lda #$06
