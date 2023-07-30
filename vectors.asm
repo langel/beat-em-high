@@ -12,7 +12,7 @@ cart_start: subroutine
         jsr sprites_clear
         
 ; reset unrom bank
-	BANK_CHANGE 0
+	BANK_CHANGE 1
         
 ; graphx to chr ram
 	lda #<graphics_addr
@@ -33,54 +33,7 @@ cart_start: subroutine
 	dex
         bne .grafx_load_loop
         
-; graphx on nametable
-        lda #$97
-        sta tile_empty
-	PPU_SETADDR $2106
-cut_scene_alien_main_draw: subroutine
-        lda #$00
-        sta temp00 ; pattern tile counter
-        ldx #$0f
-.alien_tile_loop
-	ldy #$f
-.alien_tile_row_loop
-	lda temp00
-	sta PPU_DATA
-        inc temp00
-	dey
-        bpl .alien_tile_row_loop
-        ; setup empty tile fill
-        ldy #$0f
-        lda tile_empty
-.alien_row_filler_loop
-	sta PPU_DATA
-	dey
-        bpl .alien_row_filler_loop
-	dex
-        bpl .alien_tile_loop
-        
-backfillbg: subroutine
-        PPU_SETADDR $2400
-        ldx #$00
-        ldy #$04
-.loop
-	stx PPU_DATA
-        inx
-        bne .loop
-        dey
-        bne .loop
-        
-        jsr state_level_hud_init
-        
-; SPRITE 0 SETUP
-	lda #$29
-        sta oam_ram_y
-	lda #$ce
-        sta oam_ram_spr
-        lda #$20
-        sta oam_ram_att
-        lda #$f0
-        sta oam_ram_x
+        jsr state_level_init
         
         
 ; activate PPU graphics
@@ -128,7 +81,6 @@ nmi_handler: subroutine
 .wait1	bit PPU_STATUS
         beq .wait1
         
-        
         bit PPU_STATUS
         lda scroll_x
         sta PPU_SCROLL
@@ -141,9 +93,9 @@ nmi_handler: subroutine
         
         
 ; SCROOOLLLLL
-        dec scroll_x
+        inc scroll_x
         lda scroll_x
-        cmp #$ff
+        ; cmp #$ff ; for right-to-left
         bne .same_nametable
         inc scroll_n
 .same_nametable
@@ -185,14 +137,16 @@ binny_walk: subroutine
 .not_next
         lda binny_cycle
         and #$01
+        clc
+        adc #$06
         asl
         ldy #$10
         jsr sprite_6_set_sprite
-        lda #$40
+        lda #$00
         jsr sprite_6_set_attr
-        lda #$a0
-        jsr sprite_6_set_x_mirror
-        lda #$80
+        lda #$33
+        jsr sprite_6_set_x
+        lda #$b0
         jsr sprite_6_set_y
         
 ponda_walk: subroutine
@@ -203,16 +157,18 @@ ponda_walk: subroutine
 .not_next
         lda ponda_cycle
         and #$01
+        clc
+        adc #$06
         asl
         clc
         adc #$60
         ldy #$38
         jsr sprite_6_set_sprite
-        lda #$41
+        lda #$01
         jsr sprite_6_set_attr
-        lda #$b8
-        jsr sprite_6_set_x_mirror
-        lda #$78
+        lda #$48
+        jsr sprite_6_set_x
+        lda #$a8
         jsr sprite_6_set_y
         
         

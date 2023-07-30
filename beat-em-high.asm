@@ -23,14 +23,16 @@ MAPPER EQM 2
 	seg CODE_BANK0
 	org $8000
         rorg $8000
-graphics_addr:	
-	incbin "tiles.chr"		; 4k
-sprites_addr:			
-	incbin "sprites.chr"	; 4k
+	include "map_data.asm"
+        nop
         
 	seg CODE_BANK1
         org $c000
         rorg $8000
+graphics_addr:	
+	incbin "tiles.chr"		; 4k
+sprites_addr:			
+	incbin "sprites.chr"	; 4k
         
 	seg CODE_BANK2
         org $10000

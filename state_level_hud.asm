@@ -106,6 +106,26 @@ state_level_hud_init: subroutine
         sta PPU_DATA
         sta PPU_DATA
         sta PPU_DATA
+; COLOR ATTRIBUTES
+	PPU_SETADDR $23c0
+        lda #$ff
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        lda #$0f
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
+        sta PPU_DATA
 	rts
         
         
