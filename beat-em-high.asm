@@ -26,7 +26,7 @@ MAPPER EQM 2
 graphics_addr:	
 	incbin "tiles.chr"		; 4k
 sprites_addr:			
-	incbin "binny ponda.chr"	; 4k
+	incbin "sprites.chr"	; 4k
         
 	seg CODE_BANK1
         org $c000

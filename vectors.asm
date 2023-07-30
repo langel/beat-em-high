@@ -73,14 +73,14 @@ backfillbg: subroutine
         jsr state_level_hud_init
         
 ; SPRITE 0 SETUP
-	lda #$28
-        sta $0200
-	lda #$cf
-        sta $0201
+	lda #$29
+        sta oam_ram_y
+	lda #$ce
+        sta oam_ram_spr
         lda #$20
-        sta $0202
-        lda #$f2
-        sta $0203
+        sta oam_ram_att
+        lda #$f0
+        sta oam_ram_x
         
         
 ; activate PPU graphics

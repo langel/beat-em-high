@@ -92,10 +92,15 @@ SetPalette: subroutine
 ;;;;; CONSTANT DATA
 
 Palette:
-	hex 0c1f2d00
-	hex 0c1f0111
-	hex 0c1f0111
-	hex 0c1f0111
-        hex 0c1f2437
-        hex 0c1f2130
+	hex 0f002630
+	hex 0f2d2630
+	hex 0f2d2630
+	hex 0f041134
+        ; binny
+        hex 0f1f2437
+        ; pando
+        hex 0f1f2130
+        ; other
+        hex 0f1f2437
+        hex 0f1f2130
 

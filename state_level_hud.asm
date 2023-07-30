@@ -2,65 +2,66 @@
 state_level_hud_init: subroutine
 ; TOP LINE
 	PPU_SETADDR $2041
-        lda #$c0
+        lda #$ad
         sta PPU_DATA
-        lda #$c1
+        lda #$ae
         ldy #12
 .l1	; binny top line
 	sta PPU_DATA
         dey
         bne .l1
-        lda #$c0
+        lda #$af
         sta PPU_DATA
-        lda #$c3
+        lda #$00
         sta PPU_DATA
         sta PPU_DATA
-        lda #$c0
+        lda #$ad
         sta PPU_DATA
-        lda #$c1
+        lda #$ae
         ldy #12
 .l2	; pando line
 	sta PPU_DATA
         dey
         bne .l2
-        lda #$c0
+        lda #$af
         sta PPU_DATA
 ; BOTTOM LINE
 	PPU_SETADDR $20a1
-        lda #$c0
+        lda #$cd
         sta PPU_DATA
-        lda #$c1
+        lda #$ce
         ldy #12
-.l3	; binny top line
+.l3	; binny bottom line
 	sta PPU_DATA
         dey
         bne .l3
-        lda #$c0
+        lda #$cf
         sta PPU_DATA
-        lda #$c3
+        lda #$00
         sta PPU_DATA
         sta PPU_DATA
-        lda #$c0
+        lda #$cd
         sta PPU_DATA
-        lda #$c1
+        lda #$ce
         ldy #12
 .l4	; pando line
 	sta PPU_DATA
         dey
         bne .l4
-        lda #$c0
+        lda #$cf
         sta PPU_DATA
 ; VERTICAL LINES
 	lda #$04
         sta PPU_CTRL
-	ldx #$c2
+	ldx #$bd
         PPU_SETADDR $2061
         stx PPU_DATA
         stx PPU_DATA
-        PPU_SETADDR $206e
-        stx PPU_DATA
-        stx PPU_DATA
         PPU_SETADDR $2071
+        stx PPU_DATA
+        stx PPU_DATA
+	ldx #$bf
+        PPU_SETADDR $206e
         stx PPU_DATA
         stx PPU_DATA
         PPU_SETADDR $207e
@@ -69,7 +70,7 @@ state_level_hud_init: subroutine
 ; HEALTH
 	lda #$00
         sta PPU_CTRL
-	ldx #$d0
+	ldx #$cb
         PPU_SETADDR $2085
         stx PPU_DATA
         stx PPU_DATA
