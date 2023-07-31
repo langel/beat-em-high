@@ -29,8 +29,8 @@ MAPPER EQM 2
 	seg CODE_BANK1
         org $c000
         rorg $8000
-graphics_addr:	
-	incbin "tiles.chr"		; 4k
+tiles_addr:	
+	incbin "tiles.chr"	; 4k
 sprites_addr:			
 	incbin "sprites.chr"	; 4k
         
@@ -47,6 +47,8 @@ sprites_addr:
         
 	include "dpcm.asm"
 	nop
+	include "common.asm"
+	nop
 	include "vectors.asm"
 	nop
 	include "state.asm"
@@ -55,8 +57,6 @@ sprites_addr:
 	nop
 	include "state_level_hud.asm"
 	nop
-        include "nesppu.dasm"
-        nop
 	include "sprites.asm"
 	nop
         

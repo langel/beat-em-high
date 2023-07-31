@@ -135,31 +135,13 @@ state_level_update: subroutine
         ; maps are 24 tiles high factor
         lda #$18
         sta temp01
-        ; shift + add multiplication
-        lda #$00
-        ldx #$08
-        lsr temp00
-.loop
-	bcc .no_add
-        clc
-        adc temp01
-.no_add
-	ror
-        ror temp00
-        dex
-        bne .loop
-        sta temp01
+        jsr shift_add_mult
         ; add map data address offset
         lda #>map_data_0_table
         clc
         adc temp01
         sta temp01
-        
-        lda temp00
-        sta $e2
-        lda temp01
-        sta $e3
-        
+        ; pump the tiles for popslide
         ldx #$18
         ldy #$00
 .tile_loop

@@ -2,7 +2,7 @@
 cart_start: subroutine
 	NES_INIT	; set up stack pointer, turn off PPU
         jsr wait_sync	; wait for VSYNC
-        jsr ClearRAM	; clear RAM
+        jsr clear_ram	; clear RAM
 
 ; reset PPU address and scroll registers
         lda #0
@@ -15,9 +15,9 @@ cart_start: subroutine
 	BANK_CHANGE 1
         
 ; graphx to chr ram
-	lda #<graphics_addr
+	lda #<tiles_addr
         sta temp00
-        lda #>graphics_addr
+        lda #>tiles_addr
         sta temp01
         lda #$00
         sta PPU_ADDR
