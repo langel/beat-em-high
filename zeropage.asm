@@ -13,7 +13,11 @@ tile_empty byte
 
 scroll_x  byte
 scroll_y  byte
-scroll_n  byte
+scroll_ms byte ; map screen
+
+map_ppu_lo byte
+map_ppu_hi byte
+
 
 binny_cycle byte
 ponda_cycle byte

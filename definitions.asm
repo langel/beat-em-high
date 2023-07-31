@@ -142,6 +142,15 @@ NES_MIRR_QUAD	= 8
         sta $8000
         ENDM
 
+;;;;; PPU_POPSLIDE <count>
+	MAC PPU_POPSLIDE
+.COUNT	SET {1}
+	REPEAT .COUNT
+        pla
+        sta PPU_DATA
+        REPEND
+        ENDM
+        
 ;;;;; SAVE_REGS - save A/X/Y registers
 
         MAC SAVE_REGS

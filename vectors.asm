@@ -62,6 +62,8 @@ nmi_handler: subroutine
 	lda #$02
         sta PPU_OAM_DMA
         
+        jsr state_level_render
+        
         bit PPU_STATUS
         lda #$00
         sta PPU_SCROLL
@@ -86,7 +88,7 @@ nmi_handler: subroutine
         sta PPU_SCROLL
         lda scroll_y
         sta PPU_SCROLL  ; PPU scroll = $0000
-        lda scroll_n
+        lda scroll_ms
         and #$01
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
@@ -96,13 +98,19 @@ nmi_handler: subroutine
         inc scroll_x
         lda scroll_x
         ; cmp #$ff ; for right-to-left
-        bne .same_nametable
-        inc scroll_n
-.same_nametable
+        bne .scroll_update_done
+        inc scroll_ms
+        lda scroll_ms
+        and #$03
+        sta scroll_ms
+.scroll_update_done
 
 
 	BANK_CHANGE 2
         jsr ftm_frame
+        
+        BANK_CHANGE 0
+        jsr state_level_update
 
 
 binny_head:
