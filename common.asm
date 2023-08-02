@@ -140,14 +140,20 @@ SetPalette: subroutine
 ;;;;; CONSTANT DATA
 
 Palette:
-	hex 0f002630
-	hex 0f2d2630
-	hex 0f2d2630
-	hex 0f220430
+        
+	hex 0f3d2d30 
+        hex 0f3d2c20 
+        hex 0f3d1627 
+        hex 0f3d1939  
         ; binny
         hex 0f072437
         ; pando
         hex 0f0c2130
         ; other
         hex 0f1f2437
-        hex 0f1f2130
+        hex 0f1f2130 
+        
+	hex 0f002630
+	hex 0f2d2630
+	hex 0f2d2630
+	hex 0f220430

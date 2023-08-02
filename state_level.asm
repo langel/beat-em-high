@@ -14,9 +14,9 @@ state_level_init: subroutine
         
 ; FILL NAMETABLES WITH MAP
 	BANK_CHANGE 0
-	lda #<map_data_0_table
+	lda #<map_0_tiles
         sta temp00
-	lda #>map_data_0_table
+	lda #>map_0_tiles
         sta temp01
 ; nametable 1    
 	lda #$04
@@ -68,6 +68,27 @@ state_level_init: subroutine
         bne .tile_loop2
         dec temp02
         bne .col_loop2
+; FILL NAMETABLE ATTRIBUTES
+	ldy #$00
+	sty PPU_CTRL
+	lda #<map_0_attributes
+        sta temp00
+	lda #>map_0_attributes
+        sta temp01
+.attr_col_loop1
+	lda #$23
+        sta PPU_ADDR
+	lda #$c0+8
+        sta PPU_ADDR
+        ldx #$20
+.data_attr_loop1
+	lda (temp00),y
+        sta $0300,x
+        sta PPU_DATA
+        iny
+        dex
+        bne .data_attr_loop1
+        
 	rts
 
 
@@ -137,7 +158,7 @@ state_level_update: subroutine
         sta temp01
         jsr shift_add_mult
         ; add map data address offset
-        lda #>map_data_0_table
+        lda #>map_0_tiles
         clc
         adc temp01
         sta temp01
