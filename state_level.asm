@@ -71,24 +71,45 @@ state_level_init: subroutine
 ; FILL NAMETABLE ATTRIBUTES
 	ldy #$00
 	sty PPU_CTRL
+	; setup data pointer
 	lda #<map_0_attributes
         sta temp00
 	lda #>map_0_attributes
         sta temp01
+        ; setup attr address
+        lda #$01
+        sta temp02 ; row counter
+        lda #$00
+        sta temp03 ; column counter
+        ; loop columns
 .attr_col_loop1
+        lda #$08
+        sta temp02 ; row counter
+        ; loop columns attrs
+        ldx #$07
+.data_attr_loop1
 	lda #$23
         sta PPU_ADDR
-	lda #$c0+8
-        sta PPU_ADDR
-        ldx #$20
-.data_attr_loop1
-	lda (temp00),y
+	lda temp02
+        clc
+        adc #$c0
+        clc
+        adc temp03
         sta $0300,x
+        sta PPU_ADDR
+	lda (temp00),y
         sta PPU_DATA
-        iny
+        inc temp00
+        lda temp02
+        clc
+        adc #$08
+        sta temp02
         dex
         bne .data_attr_loop1
-        
+	inc temp03
+        lda temp03
+        cmp #$08
+        bne .attr_col_loop1
 	rts
 
 

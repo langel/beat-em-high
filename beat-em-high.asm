@@ -30,7 +30,7 @@ MAPPER EQM 2
         org $c000
         rorg $8000
 tiles_addr:	
-	incbin "tiles.chr"	; 4k
+	incbin "street.chr"	; 4k
 sprites_addr:			
 	incbin "sprites.chr"	; 4k
         

@@ -85,11 +85,11 @@ nmi_handler: subroutine
         
         bit PPU_STATUS
         lda scroll_x
-        ;sta PPU_SCROLL
+        sta PPU_SCROLL
         lda scroll_y
-        ;sta PPU_SCROLL  ; PPU scroll = $0000
-        ;lda scroll_ms
-        ;and #$01
+        sta PPU_SCROLL  ; PPU scroll = $0000
+        lda scroll_ms
+        and #$01
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
         
