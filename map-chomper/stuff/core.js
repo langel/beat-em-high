@@ -32,14 +32,14 @@ const spew = (data, map_w, map_h) => {
 	// map attributes
 	table += '\nmap_0_attributes:\n';
 	const attr_offset = map_w * map_h;
-	const attr_w = map_w >> 2;
-	const attr_h = map_h >> 2;
+	const attr_w = Math.ceil(map_w / 4);
+	const attr_h = Math.ceil(map_h / 4);
 	console.log(attr_w + ' ' + attr_h);
 	for (let x = 0; x < attr_w; x++) {
 		let line = '';
 		for (let y = 0; y < attr_h; y++) {
-			console.log(attr_offset + x + y * attr_h);
-			let val = data[attr_offset + x + y * attr_h];
+			console.log(attr_offset + x + y * attr_w);
+			let val = data[attr_offset + x + y * attr_w];
 			line += tohex(val);
 		}
 		console.log(line);
