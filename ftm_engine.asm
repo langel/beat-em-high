@@ -1,4 +1,5 @@
 
+ftm_order	= $fd
 ftm_row		= $fe
 ftm_temp	= $ff
 
@@ -11,9 +12,22 @@ ftm_frame: subroutine
         lda #$00
         sta ftm_temp
         
-        
+        lda ftm_order
+        sta temp00
+        lda #$05
+        sta temp01
+        jsr shift_add_mult
+        lda temp00
+        sta $f6
+        tay
+        lda ftm_track_0_order,y
+        tay
+        lda ftm_track_0_chan_4_patterns_lo,y
+        sta $f8
+        lda ftm_track_0_chan_4_patterns_hi,y
+        sta $f9
         ldy ftm_row
-        lda ftm_pattern,y
+        lda ($f8),y
         cmp #$ff
         beq .row_done
         
@@ -45,8 +59,18 @@ ftm_frame: subroutine
 .row_done   
         inc ftm_row
         lda ftm_row
-        and #$3f
+        cmp #$3f
+        bne .done
+.pattern_done
+	lda #$00
         sta ftm_row
+        inc ftm_order
+        lda ftm_order
+        cmp #$0c
+        bne .done
+.song_loop
+	lda #$00
+        sta ftm_order
         
 .done
 	rts

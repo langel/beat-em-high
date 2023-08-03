@@ -1,0 +1,78 @@
+
+ftm_pattern: 
+ hex 00ffffffff00ffff00ffffffff03ffff0102ffffffffffffffffffffff02ffff
+ hex 00ffffffffffffffffffffffffffffff00ffffffff00ffffffffffffff00ffff
+
+ftm_track_0_order:
+	hex 0000000000
+	hex 0000000000
+	hex 0101010101
+	hex 0202020202
+	hex 0303030303
+	hex 0404040404
+	hex 0505050505
+	hex 0606060606
+	hex 0707070707
+	hex 0808080808
+	hex 0909090909
+	hex 0a0a0a0a0a
+
+ftm_track_0_chan_4_pattern_00: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffff01ffffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_01: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffff01ffffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_02: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffffffffffffffffffffff00ffffffffffff
+ftm_track_0_chan_4_pattern_03: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffff01ffffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_04: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffff01ffffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_05: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffff01ffffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_06: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffffffffffffff03ffffffffffffffffffff
+ftm_track_0_chan_4_pattern_07: 
+	hex 00ffffffff00ffff00ffffffff03ffff0102ffffffffffffffffffffff02ffff
+	hex 00ffffffffffffff03ffffffffffffff0102ffffffffffffffffffffffffffff
+ftm_track_0_chan_4_pattern_08: 
+	hex 00ffffffff00ffff00ffffffff03ffff0102ffffffffffffffffffffff02ffff
+	hex 00ffffffffffffffffffffffffffffff00ffffffff00ffffffffffffff00ffff
+ftm_track_0_chan_4_pattern_09: 
+	hex 00ffffffff00ffff00ffffffff03ffff0102ffffffffffffffffffffff02ffff
+	hex 00ffffffffffffffffffffffffffffff00ffffffff00ffffffffffffff00ffff
+ftm_track_0_chan_4_pattern_0a: 
+	hex 00ffffffff00ffff00ffffffffffffff01ffffffffffffffffffffffff00ffff
+	hex 00ffffffffffffff00ffffffffffffffffffffffffff04ffff04ffffffffffff
+
+
+ftm_track_0_chan_4_patterns_lo:
+	byte <#ftm_track_0_chan_4_pattern_00
+	byte <#ftm_track_0_chan_4_pattern_01
+	byte <#ftm_track_0_chan_4_pattern_02
+	byte <#ftm_track_0_chan_4_pattern_03
+	byte <#ftm_track_0_chan_4_pattern_04
+	byte <#ftm_track_0_chan_4_pattern_05
+	byte <#ftm_track_0_chan_4_pattern_06
+	byte <#ftm_track_0_chan_4_pattern_07
+	byte <#ftm_track_0_chan_4_pattern_08
+	byte <#ftm_track_0_chan_4_pattern_09
+	byte <#ftm_track_0_chan_4_pattern_0a
+ftm_track_0_chan_4_patterns_hi:
+	byte >#ftm_track_0_chan_4_pattern_00
+	byte >#ftm_track_0_chan_4_pattern_01
+	byte >#ftm_track_0_chan_4_pattern_02
+	byte >#ftm_track_0_chan_4_pattern_03
+	byte >#ftm_track_0_chan_4_pattern_04
+	byte >#ftm_track_0_chan_4_pattern_05
+	byte >#ftm_track_0_chan_4_pattern_06
+	byte >#ftm_track_0_chan_4_pattern_07
+	byte >#ftm_track_0_chan_4_pattern_08
+	byte >#ftm_track_0_chan_4_pattern_09
+	byte >#ftm_track_0_chan_4_pattern_0a
