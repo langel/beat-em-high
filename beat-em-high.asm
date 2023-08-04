@@ -39,6 +39,8 @@ sprites_addr:
         rorg $8000
 	include "ftm_engine.asm"
 	nop
+	include "ftm_data.asm"
+	nop
         
 	seg CODE_BANK3
         org $14000

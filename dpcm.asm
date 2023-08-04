@@ -107,6 +107,3 @@ ftm_dpcm_samp_table:
 ftm_dpcm_freq_table: 
  hex 0f0e0e0f0f
  
-ftm_pattern: 
- hex 00ffffffff00ffff00ffffffff03ffff0102ffffffffffffffffffffff02ffff
- hex 00ffffffffffffffffffffffffffffff00ffffffff00ffffffffffffff00ffff
