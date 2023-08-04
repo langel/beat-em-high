@@ -13,6 +13,7 @@ ftm_frame: subroutine
         sta ftm_temp
         
         lda ftm_order
+        sta $f7
         sta temp00
         lda #$05
         sta temp01
@@ -33,7 +34,8 @@ ftm_frame: subroutine
         
         tay
 
-	lda #%00001111			;stop DPCM
+	lda APU_CHAN_CTRL
+	and #%00001111			;stop DPCM
 	sta APU_CHAN_CTRL
 
 	lda ftm_dpcm_samp_table,y
@@ -53,7 +55,8 @@ ftm_frame: subroutine
 
 	lda #32					;reset DAC counter
 	sta APU_DMC_WRITE
-	lda #%00011111			;start DMC
+        lda APU_CHAN_CTRL
+	ora #%00010000			;start DMC
 	sta APU_CHAN_CTRL
         
 .row_done   
@@ -66,7 +69,7 @@ ftm_frame: subroutine
         sta ftm_row
         inc ftm_order
         lda ftm_order
-        cmp #$0c
+        cmp #$0b
         bne .done
 .song_loop
 	lda #$00
@@ -74,3 +77,53 @@ ftm_frame: subroutine
         
 .done
 	rts
+        
+        
+ftm_channel_disable: subroutine
+	; a = bit value of channel
+        ; #%00000001 sqaure 1
+        ; #%00000010 sqaure 2
+        ; #%00000100 triangle
+        ; #%00001000 noise
+        ; #%00010000 dpcm
+	eor #$FF
+	and APU_CHAN_CTRL
+	sta APU_CHAN_CTRL
+	rts
+
+ft_channel_enable: subroutine
+	; a = bit value of channel
+	ora APU_CHAN_CTRL
+	sta APU_CHAN_CTRL
+        rts
+        ; XXX do we need to restart oscillators
+        ;     by writing to freq high
+;	lda #$FF
+;	cpx #$00
+;	beq :+
+;	cpx #$01
+;	beq :++
+;	rts
+;:	sta var_ch_PrevFreqHigh
+;	rts
+;:	sta var_ch_PrevFreqHigh + 1
+;	rts
+
+
+periodTableLo:
+ ;     A   A#  B   C   C#  D   D#  E   F   F#  G   G#
+ byte $f1,$7f,$13,$ad,$4d,$f3,$9d,$4c,$00,$b8,$74,$34 ; 12
+ byte $f8,$bf,$89,$56,$26,$f9,$ce,$a6,$80,$5c,$3a,$1a ; 24
+ byte $fb,$df,$c4,$ab,$93,$7c,$67,$52,$3f,$2d,$1c,$0c ; 36
+ byte $fd,$ef,$e1,$d5,$c9,$bd,$b3,$a9,$9f,$96,$8e,$86 ; 48
+ byte $7e,$77,$70,$6a,$64,$5e,$59,$54,$4f,$4b,$46,$42 ; 60
+ byte $3f,$3b,$38,$34,$31,$2f,$2c,$29,$27,$25,$23,$21 ; 72
+ byte $1f,$1d,$1b,$1a,$18,$17,$15,$14
+periodTableHi:
+ byte $07,$07,$07,$06,$06,$05,$05,$05,$05,$04,$04,$04
+ byte $03,$03,$03,$03,$03,$02,$02,$02,$02,$02,$02,$02
+ byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+ byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+ byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+ byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+ byte $00,$00,$00,$00,$00,$00,$00,$00
