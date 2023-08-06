@@ -56,7 +56,7 @@ render_disable:
 	rts
 
 
-shift_add_mult:
+shift_add_mult: subroutine
         ; shift + add multiplication
         ; temp00, temp01 in = factors
         ; temp01, temp00 out = 16bit address
@@ -75,6 +75,17 @@ shift_add_mult:
         sta temp01
         rts
         
+
+distance: subroutine
+; from https://forums.parallax.com/discussion/147522/dog-leg-hypotenuse-approximation
+; hi = max( a, b )
+; lo = min( a, b )
+; hypot ~= hi + lo/2
+; 
+; but johnybot on nesdev discord said:
+; hi + (lo >> 2) + (lo >> 4) + (lo >> 6) 
+; seems like a much better approximation for 8 bit ASM
+        rts
         
         
 ;;;;; CONTROLLER READING
