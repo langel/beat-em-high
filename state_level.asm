@@ -127,6 +127,19 @@ state_level_render: subroutine
         lda map_ppu_lo
         sta PPU_ADDR
         PPU_POPSLIDE 24  ; 8 cycles each
+        ; attr column from cache
+        tsx
+        stx temp03
+        lda #0
+        sta PPU_CTRL
+        lda map_ppu_hi
+        ora #$03
+        sta map_ppu_hi
+        pla
+        sta map_ppu_lo
+        PPU_ATTRSLIDE 7
+        
+   	; reload stack pointer
         ldx temp02		; 88
         txs			; 90
 	rts
@@ -134,7 +147,11 @@ state_level_render: subroutine
         
         
 state_level_update: subroutine
-	; find ppu column position
+	; setup for popslide
+        ; $0100-$0117: tile column
+        ; $0118: attr start addr
+        ; $0119-$011f: attr column
+	; find ppu tile column position
 	ldx scroll_ms
         inx
         txa
@@ -192,5 +209,39 @@ state_level_update: subroutine
         iny
         dex
         bne .tile_loop
+        
+        ; attr column
+        lda map_ppu_lo
+        lsr
+        lsr
+        and #$07
+        sta temp02 ; target column
+        clc
+        adc #$c0
+        sta $0118 ; ppu attr addr
+        ldx scroll_ms
+        inx
+        txa
+        and #$03
+        asl
+        asl
+        asl
+        clc
+        adc temp02 ; attr map addr column
+        sta temp02
+        asl
+        asl
+        asl
+        sec
+        sbc temp02 
+        tax
+        ldy #$00
+.attr_loop
+        lda map_0_attributes,x
+        sta $0119,y
+        inx
+        iny
+        cpy #$07
+        bne .attr_loop
         
 	rts

@@ -151,6 +151,22 @@ NES_MIRR_QUAD	= 8
         REPEND
         ENDM
         
+;;;;; PPU_ATTRSLIDE <count>
+	MAC PPU_ATTRSLIDE
+.COUNT	SET {1}
+	REPEAT .COUNT
+        lda map_ppu_hi
+        sta PPU_ADDR
+        lda map_ppu_lo
+        clc
+        adc #$08
+        sta map_ppu_lo
+        sta PPU_ADDR
+        pla
+        sta PPU_DATA
+        REPEND
+        ENDM
+        
 ;;;;; SAVE_REGS - save A/X/Y registers
 
         MAC SAVE_REGS
