@@ -9,10 +9,12 @@ ent_type	= $0300
 ent_hp		= $0301
 ent_x		= $0302
 ent_y		= $0303
-ent_r0		= $0304
-ent_r1		= $0305
-ent_r2		= $0306
-ent_r3		= $0307
+ent_sx		= $0304
+ent_sy		= $0305
+ent_r0		= $0308
+ent_r1		= $0309
+ent_r2		= $030a
+ent_r3		= $030b
 
 ent_y_sort	= $0400
 
@@ -60,10 +62,10 @@ state_level_ents_init: subroutine
         sta ent_y
         sta ent_r1
         ; pando init post
-        lda #$48
+        lda #$58
         sta ent_x+$10
         sta ent_r0+$10
-        lda #$a8
+        lda #$c0
         sta ent_y+$10
         sta ent_r1+$10
 	rts
@@ -71,6 +73,7 @@ state_level_ents_init: subroutine
 
 state_level_ents_update: subroutine        
         ; ent update
+_ENT_UPDATE:
         lda #$00
         sta ent_ram_offset
         lda #$10
@@ -92,6 +95,7 @@ ent_update_next:
         sta ent_ram_offset
         bne .ent_update_loop
         ; ent y sort
+_ENT_Y_SORT:
         ldy #$00
 .ent_y_sort_loop
         lda ent_y_sort,y
@@ -100,8 +104,8 @@ ent_update_next:
         lda ent_ram_offset_table,x
         tax
         lda ent_y,x
+        sta $0410,x
         sta temp03
-        sta $02e8
         iny
         lda ent_y_sort,y
         sta temp01
@@ -120,8 +124,16 @@ ent_update_next:
 .not_greater
 .ent_y_loop_check
 	cpy #$0f
-        bne .ent_y_sort_loop
+        bne 	.ent_y_sort_loop
+_ENT_SPRITE_CLEAR:
+	lda #$ff
+        ldx #$10
+.ent_sprite_clear_loop
+	sta $0200,x
+        inx
+        bne .ent_sprite_clear_loop
         ; ent render
+_ENT_RENDER:
         lda #$00
         sta ent_y_sort_pos
 	lda #$10

@@ -8,9 +8,13 @@ ent_krok_update: subroutine
         lsr
         lsr
         clc
-        adc #$28
-        sta ent_x+$20
-        lda ent_r0+$20
+        adc #$38
+        ldx ent_ram_offset
+        sta ent_x,x
+        sec
+        sbc #$08
+        sta ent_sx,x
+        lda ent_r0,x
         clc
         adc #$40
         tax
@@ -19,12 +23,16 @@ ent_krok_update: subroutine
         lda #$15
         sta temp00
         jsr shift_divide
-        sta ent_r1+$20
+        ldx ent_ram_offset
+        sta ent_r1,x
         clc
-        adc #$a4
-        sta ent_y+$20
-        dec ent_r0+$20
-        dec ent_r0+$20
+        adc #$b4
+        sta ent_y,x
+        sec
+        sbc #$10
+        sta ent_sy,x
+        dec ent_r0,x
+        ;dec ent_r0,x
         
 	jmp ent_update_next
         
@@ -33,9 +41,9 @@ ent_krok_update: subroutine
         
         
 ent_krok_render: subroutine
-	lda ent_x,x
+	lda ent_sx,x
         jsr sprite_4_set_x
-        lda ent_y,x
+        lda ent_sy,x
         jsr sprite_4_set_y
         lda #$02
         jsr sprite_4_set_attr
