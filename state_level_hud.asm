@@ -25,7 +25,7 @@ hud_tile_table:
         
 state_level_hud_update: subroutine
 ; BINNY HEAD SPRITE
-        ldy #$28
+        ldy #$e0
         lda #$06
         jsr sprite_4_set_sprite
         lda #$00
@@ -35,7 +35,7 @@ state_level_hud_update: subroutine
         lda #$0e
         jsr sprite_4_set_y
 ; PANDO HEAD SPRITE
-        ldy #$50
+        ldy #$f0
         lda #$66
         jsr sprite_4_set_sprite
         lda #$01

@@ -152,7 +152,7 @@ state_level_plot_update: subroutine
         ; maps are 24 tiles high factor
         lda #$18
         sta temp01
-        jsr shift_add_mult
+        jsr shift_multiply
         ; add map data address offset
         lda #>map_0_tiles
         clc

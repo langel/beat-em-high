@@ -138,4 +138,36 @@ state_level_ents_update: subroutine
         lda ent_y+$10
         jsr sprite_6_set_y
         
+; KROK
+	ldy #$60
+	lda #$c0
+        jsr sprite_4_set_sprite
+        lda #$20
+        ldx ent_r0+$20
+        lda sine_table,x
+        lsr
+        lsr
+        clc
+        adc #$28
+        jsr sprite_4_set_x
+        lda ent_r0+$20
+        clc
+        adc #$40
+        tax
+        lda sine_table,x
+        sta temp01
+        sta ent_r2+$20
+        lda #$15
+        sta temp00
+        sta ent_r3+$20
+        jsr shift_divide
+        sta ent_r1+$20
+        clc
+        adc #$a4
+        jsr sprite_4_set_y
+        lda #$02
+        jsr sprite_4_set_attr
+        dec ent_r0+$20
+        
+        
 	rts

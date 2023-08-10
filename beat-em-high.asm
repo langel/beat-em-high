@@ -53,17 +53,19 @@ sprites_addr:
 	nop
 	include "vectors.asm"
 	nop
+	include "sprites.asm"
+	nop
 	include "state.asm"
 	nop
 	include "state_level.asm"
         nop
+	include "state_level_cam.asm"
+	nop
 	include "state_level_ents.asm"
 	nop
 	include "state_level_hud.asm"
         nop
 	include "state_level_plot.asm"
-	nop
-	include "sprites.asm"
 	nop
         
         

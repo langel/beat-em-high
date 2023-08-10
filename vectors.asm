@@ -43,7 +43,7 @@ cart_start: subroutine
         
 ; activate PPU graphics
         jsr wait_sync	; wait for VSYNC (and PPU warmup)
-	jsr render_enable
+	jsr render_enable_all
         
         
 .endless

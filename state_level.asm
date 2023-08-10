@@ -49,29 +49,8 @@ state_level_render: subroutine
         
         
 state_level_update: subroutine
-
 	jsr state_level_ents_update
-        
-; SCROOOLLLLL
-	; scroll_dir = amount to increase scroll_x
-        ; positive number goes right
-        ; negative number goes left
-	lda scroll_dir
-        lda #$01
-        lda wtf
-        and #$01
-        beq .scroll_update_done
-        inc scroll_x
-        lda scroll_x
-        ; cmp #$ff ; for right-to-left
-        bne .scroll_update_done
-        inc scroll_ms
-        lda scroll_ms
-        and #$03
-        sta scroll_ms
-.scroll_update_done
-
 	jsr state_level_hud_update
+        jsr state_level_cam_update
 	jsr state_level_plot_update
-        
 	rts

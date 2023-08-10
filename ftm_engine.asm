@@ -19,7 +19,7 @@ ftm_frame: subroutine
         sta temp00
         lda #$05
         sta temp01
-        jsr shift_add_mult
+        jsr shift_multiply
         lda temp00
         sta $f6 ; order offset
         

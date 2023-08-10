@@ -43,8 +43,15 @@ rng_prev: subroutine
         
         
 ; disable PPU drawing and NMI
-render_enable:
+render_enable_all:
 	lda #MASK_BG|MASK_SPR|MASK_SPR_CLIP|MASK_BG_CLIP
+        sta PPU_MASK	; enable rendering
+        lda #CTRL_NMI|#CTRL_SPR_1000
+        sta PPU_CTRL	; enable NMI
+	rts
+        
+render_enable_bg:
+	lda #MASK_BG|MASK_SPR_CLIP|MASK_BG_CLIP
         sta PPU_MASK	; enable rendering
         lda #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL	; enable NMI
@@ -56,10 +63,11 @@ render_disable:
 	rts
 
 
-shift_add_mult: subroutine
+shift_multiply: subroutine
         ; shift + add multiplication
         ; temp00, temp01 in = factors
-        ; temp01, temp00 out = 16bit address
+        ; returns little endian 16bit val
+        ;         at temp01, temp00
         lda #$00
         ldx #$08
         lsr temp00
@@ -73,7 +81,37 @@ shift_add_mult: subroutine
         dex
         bne .loop
         sta temp01
+        rts        
+        
+shift_divide: subroutine
+	; shift + add division
+        ; temp00 = dividend
+        ; temp01 = divisor
+        ; returns quotient in a and temp00
+        ldx #$08
+        dec temp00
+.loop
+	lsr temp01
+        bcc .no_add
+        adc temp00
+.no_add
+	ror
+        dex
+        bne .loop
+        sta temp00
         rts
+        
+;        LDA #$80     ;Preload sentinel bit into RESULT
+;        STA RESULT
+;        ASL A        ;Initialize RESULT hi byte to 0;
+;	DEC NUM1
+;L1      LSR NUM2     ;Get low bit of NUM2
+;        BCC L2       ;0 or 1?
+;        ADC NUM1     ;If 1, add (NUM1-1)+1
+;L2      ROR A        ;"Stairstep" shift (catching carry from add)
+;        ROR RESULT
+;        BCC L1       ;When sentinel falls off into carry, we're done
+;        STA RESULT+1
         
 
 distance: subroutine
@@ -168,3 +206,38 @@ Palette:
 	hex 0f2d2630
 	hex 0f2d2630
 	hex 0f220430
+
+
+sine_table:
+	hex 808386898c8f9295
+	hex 989b9ea2a5a7aaad
+	hex b0b3b6b9bcbec1c4
+	hex c6c9cbced0d3d5d7
+	hex dadcdee0e2e4e6e8
+	hex eaebedeef0f1f3f4
+	hex f5f6f8f9fafafbfc
+	hex fdfdfefefeffffff
+	hex fffffffffefefefd
+	hex fdfcfbfafaf9f8f6
+	hex f5f4f3f1f0eeedeb
+	hex eae8e6e4e2e0dedc
+	hex dad7d5d3d0cecbc9
+	hex c6c4c1bebcb9b6b3
+	hex b0adaaa7a5a29e9b
+	hex 9895928f8c898683
+	hex 807c797673706d6a
+	hex 6764615d5a585552
+	hex 4f4c494643413e3b
+	hex 393634312f2c2a28
+	hex 2523211f1d1b1917
+	hex 151412110f0e0c0b
+	hex 0a09070605050403
+	hex 0202010101000000
+	hex 0000000001010102
+	hex 0203040505060709
+	hex 0a0b0c0e0f111214
+	hex 1517191b1d1f2123
+	hex 25282a2c2f313436
+	hex 393b3e414346494c
+	hex 4f5255585a5d6164
+	hex 676a6d707376797c
