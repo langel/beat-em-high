@@ -67,7 +67,12 @@ sprites_addr:
         nop
 	include "state_level_plot.asm"
 	nop
-        
+	include "ent_player.asm"
+	nop
+	include "ent_krok.asm"
+	nop
+
+
         
 	seg VECTORS
 	org $17ffa	

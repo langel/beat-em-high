@@ -14,9 +14,44 @@ ent_r1		= $0305
 ent_r2		= $0306
 ent_r3		= $0307
 
+ent_y_sort	= $0400
+
 ; XXX need a bubble sort sprite priority
 
 state_level_ents_init: subroutine
+        ; init types
+        lda #$00
+        sta temp00
+        ldy #$ff
+.type_clear
+	tax
+        lda #$ff
+	sta ent_type,x
+        lda #$10
+        clc
+        adc temp00
+        sta temp00
+        bne .type_clear
+        ; init y sort
+        lda #$ff
+        ldx #$0f
+.y_clear
+	sta $0400,x
+        dex
+        bpl .y_clear
+        
+; SETUP 3 ENTS for devving :D/
+        lda #$00
+        sta ent_type+$00
+        sta ent_type+$10
+        lda #$01
+        sta ent_type+$20
+        ldx #$00
+        stx ent_y_sort+0
+        inx
+        stx ent_y_sort+1
+        inx
+        stx ent_y_sort+2
 	; binny init pos
 	lda #$33
         sta ent_x
@@ -35,139 +70,87 @@ state_level_ents_init: subroutine
 
 
 state_level_ents_update: subroutine        
-        
-; BINNY
-	; demo update
-        lda #$02
-        sta temp00
-        lda ent_x
-        cmp ent_r0
-        beq .binny_x_equal
-        bcs .binny_x_greater
-.binny_x_lesser
-	inc ent_x
-        lda #$01
-        sta ent_r2
-        jmp .binny_x_done
-.binny_x_greater
-	dec ent_x
-        lda #$ff
-        sta ent_r2
-        jmp .binny_x_done
-.binny_x_equal
-	dec temp00
-.binny_x_done
-
-        lda ent_y
-        cmp ent_r1
-        beq .binny_y_equal
-        bcs .binny_y_greater
-.binny_y_lesser
-	inc ent_y
-        jmp .binny_y_done
-.binny_y_greater
-	dec ent_y
-        jmp .binny_y_done
-.binny_y_equal
-	dec temp00
-.binny_y_done
-
-	; update new target position
-        lda temp00
-        bne .binny_skip_new_targ
-	RNG0_NEXT
-        lsr
-        adc #$30
-        sta ent_r0
-	RNG0_NEXT
-        lsr
-        lsr
-        adc #$88
-        sta ent_r1
-.binny_skip_new_targ
-        
-	lda wtf
-        and #$07
-        bne .binny_not_next
-        inc binny_cycle
-.binny_not_next
-
-        lda binny_cycle
-        and #$01
-        clc
-        adc #$06
-        asl
-        ldy #$10
-        jsr sprite_6_set_sprite
-        lda ent_y
-        jsr sprite_6_set_y
-        lda ent_r2
-        bmi .binny_mirror
-.binny_not_mirror
+        ; ent update
         lda #$00
-        jsr sprite_6_set_attr
-        lda ent_x
-        jsr sprite_6_set_x
-        jmp .binny_done
-.binny_mirror
-        lda #$40
-        jsr sprite_6_set_attr
-        lda ent_x
-        jsr sprite_6_set_x_mirror
-.binny_done
-        
-; PANDO
-	lda wtf
-        and #$07
-        bne .pando_not_next
-        inc ponda_cycle
-.pando_not_next
-        lda ponda_cycle
-        and #$01
-        clc
-        adc #$06
-        asl
-        clc
-        adc #$60
-        ldy #$38
-        jsr sprite_6_set_sprite
-        lda #$01
-        jsr sprite_6_set_attr
-        lda ent_x+$10
-        jsr sprite_6_set_x
-        lda ent_y+$10
-        jsr sprite_6_set_y
-        
-; KROK
-	ldy #$60
-	lda #$c0
-        jsr sprite_4_set_sprite
-        lda #$20
-        ldx ent_r0+$20
-        lda sine_table,x
-        lsr
-        lsr
-        clc
-        adc #$28
-        jsr sprite_4_set_x
-        lda ent_r0+$20
-        clc
-        adc #$40
+        sta ent_ram_offset
+        lda #$10
+        sta ent_oam_offset
+.ent_update_loop
+	ldy ent_ram_offset
+        lda ent_type,y
+        bmi ent_update_next
         tax
-        lda sine_table,x
-        sta temp01
-        sta ent_r2+$20
-        lda #$15
+        lda state_level_ent_update_lo,x
         sta temp00
-        sta ent_r3+$20
-        jsr shift_divide
-        sta ent_r1+$20
+        lda state_level_ent_update_hi,x
+        sta temp01
+        jmp (temp00)
+ent_update_next:
+	lda #$10
         clc
-        adc #$a4
-        jsr sprite_4_set_y
-        lda #$02
-        jsr sprite_4_set_attr
-        dec ent_r0+$20
-        
-        
+        adc ent_ram_offset
+        sta ent_ram_offset
+        bne .ent_update_loop
+        ; ent y sort
+        lda #$00
+        sta ent_y_sort_pos
+.ent_y_sort_loop
+        ; ent render
+        lda #$00
+        sta ent_y_sort_pos
+	lda #$10
+        sta ent_oam_offset
+.ent_render_loop
+	lda ent_y_sort_pos
+        tay
+        lda ent_y_sort,y
+        bmi ent_render_next
+        tay
+        asl
+        asl
+        asl
+        asl
+        sta ent_ram_offset
+        tay
+        lda ent_type,y
+        sta $03e8
+        tax
+        lda state_level_ent_render_lo,x
+        sta temp00
+        sta $03ea
+        lda state_level_ent_render_hi,x
+        sta temp01
+        sta $03eb
+        ldx ent_ram_offset
+        ldy ent_oam_offset
+        jmp (temp00)
+ent_render_next:
+	ldx ent_ram_offset
+        lda ent_type,x
+        tax
+        lda state_level_ent_size,x
+        clc
+        adc ent_oam_offset
+        sta ent_oam_offset
+        inc ent_y_sort_pos
+        lda ent_y_sort_pos
+        cmp #$10
+        bne .ent_render_loop
 	rts
+        
+        
+state_level_ent_size:
+	; number of sprites * 4
+	byte 24,16
+state_level_ent_update_lo:
+	byte #<ent_player_update
+        byte #<ent_krok_update
+state_level_ent_update_hi:
+	byte #>ent_player_update
+        byte #>ent_krok_update
+state_level_ent_render_lo:
+	byte #<ent_player_render
+        byte #<ent_krok_render
+state_level_ent_render_hi:
+	byte #>ent_player_render
+        byte #>ent_krok_render

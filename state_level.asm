@@ -23,13 +23,14 @@ state_level_render: subroutine
         ldx #$ff		; 19
         txs			; 21
         ; tile column from cache
-        lda #CTRL_INC_32
-        sta PPU_CTRL
-        lda map_ppu_hi
-        sta PPU_ADDR
-        lda map_ppu_lo
-        sta PPU_ADDR
+        lda #CTRL_INC_32	; 23
+        sta PPU_CTRL		; 27
+        lda map_ppu_hi		; 30
+        sta PPU_ADDR		; 34
+        lda map_ppu_lo		; 37
+        sta PPU_ADDR		; 41
         PPU_POPSLIDE 24  ; 8 cycles each
+        ; 8 * 24 = 192		; 233 cycles
         ; attr column from cache
         tsx
         stx temp03
@@ -42,8 +43,8 @@ state_level_render: subroutine
         sta map_ppu_lo
         PPU_ATTRSLIDE 7
    	; reload stack pointer
-        ldx temp02		; 88
-        txs			; 90
+        ldx temp02		; 88wrong
+        txs			; 90wrong
 	rts
         
         

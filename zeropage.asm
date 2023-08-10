@@ -17,6 +17,10 @@ scroll_y  byte
 scroll_ms byte ; map screen
 scroll_dir byte
 
+ent_ram_offset	byte
+ent_oam_offset	byte
+ent_y_sort_pos	byte
+
 map_ppu_lo byte
 map_ppu_hi byte
 

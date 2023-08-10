@@ -87,6 +87,7 @@ shift_divide: subroutine
 	; shift + add division
         ; temp00 = dividend
         ; temp01 = divisor
+        ; ...or is it the other way around? xD
         ; returns quotient in a and temp00
         ldx #$08
         dec temp00
@@ -101,17 +102,6 @@ shift_divide: subroutine
         sta temp00
         rts
         
-;        LDA #$80     ;Preload sentinel bit into RESULT
-;        STA RESULT
-;        ASL A        ;Initialize RESULT hi byte to 0;
-;	DEC NUM1
-;L1      LSR NUM2     ;Get low bit of NUM2
-;        BCC L2       ;0 or 1?
-;        ADC NUM1     ;If 1, add (NUM1-1)+1
-;L2      ROR A        ;"Stairstep" shift (catching carry from add)
-;        ROR RESULT
-;        BCC L1       ;When sentinel falls off into carry, we're done
-;        STA RESULT+1
         
 
 distance: subroutine
