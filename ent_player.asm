@@ -54,7 +54,7 @@ ent_binny_update: subroutine; BINNY
         bne .binny_skip_new_targ
 	RNG0_NEXT
         lsr
-        adc #$38
+        adc #$10
         sta ent_r0
 	RNG0_NEXT
         lsr

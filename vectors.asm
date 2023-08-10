@@ -75,11 +75,10 @@ nmi_handler: subroutine
         sta PPU_SCROLL
         lda #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
-        ; kill time to exit vblank
-;        ldy #$00
-.killy
-;	dey
- ;       bne .killy
+	
+        ; use HUD draW time for audio engine
+	BANK_CHANGE 2
+        jsr ftm_frame
         
 	; wait for Sprite 0; SPRITE 0 WAIT TIME!!!
 .wait0	bit PPU_STATUS
@@ -99,17 +98,9 @@ nmi_handler: subroutine
         sta PPU_CTRL
         
 
-
-	BANK_CHANGE 2
-        jsr ftm_frame
-        
         BANK_CHANGE 0
         jsr state_level_update
 
-
-	
-        
-        
         lda rng0
         jsr rng_next
         sta rng0
