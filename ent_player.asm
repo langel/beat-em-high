@@ -66,6 +66,7 @@ ent_binny_update: subroutine; BINNY
 	jmp ent_update_next
         
         
+        
 ent_binny_render: subroutine
 	lda wtf
         and #$07

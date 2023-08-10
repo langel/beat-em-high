@@ -80,9 +80,9 @@ state_level_ents_update: subroutine
         lda ent_type,y
         bmi ent_update_next
         tax
-        lda state_level_ent_update_lo,x
+        lda ent_update_lo,x
         sta temp00
-        lda state_level_ent_update_hi,x
+        lda ent_update_hi,x
         sta temp01
         jmp (temp00)
 ent_update_next:
@@ -92,9 +92,35 @@ ent_update_next:
         sta ent_ram_offset
         bne .ent_update_loop
         ; ent y sort
-        lda #$00
-        sta ent_y_sort_pos
+        ldy #$00
 .ent_y_sort_loop
+        lda ent_y_sort,y
+        sta temp00
+        tax
+        lda ent_ram_offset_table,x
+        tax
+        lda ent_y,x
+        sta temp03
+        sta $02e8
+        iny
+        lda ent_y_sort,y
+        sta temp01
+        tax
+        lda ent_ram_offset_table,x
+        tax
+        lda ent_y,x
+        cmp temp03
+        bcc .not_greater
+.not_lesser
+        lda temp00
+        sta ent_y_sort,y
+        lda temp01
+        sta ent_y_sort-1,y
+        jmp .ent_y_loop_check
+.not_greater
+.ent_y_loop_check
+	cpy #$0f
+        bne .ent_y_sort_loop
         ; ent render
         lda #$00
         sta ent_y_sort_pos
@@ -106,21 +132,15 @@ ent_update_next:
         lda ent_y_sort,y
         bmi ent_render_next
         tay
-        asl
-        asl
-        asl
-        asl
+        lda ent_ram_offset_table,y
         sta ent_ram_offset
         tay
         lda ent_type,y
-        sta $03e8
         tax
-        lda state_level_ent_render_lo,x
+        lda ent_render_lo,x
         sta temp00
-        sta $03ea
-        lda state_level_ent_render_hi,x
+        lda ent_render_hi,x
         sta temp01
-        sta $03eb
         ldx ent_ram_offset
         ldy ent_oam_offset
         jmp (temp00)
@@ -128,7 +148,7 @@ ent_render_next:
 	ldx ent_ram_offset
         lda ent_type,x
         tax
-        lda state_level_ent_size,x
+        lda ent_size,x
         clc
         adc ent_oam_offset
         sta ent_oam_offset
@@ -139,18 +159,20 @@ ent_render_next:
 	rts
         
         
-state_level_ent_size:
+ent_size:
 	; number of sprites * 4
 	byte 24,16
-state_level_ent_update_lo:
+ent_update_lo:
 	byte #<ent_player_update
         byte #<ent_krok_update
-state_level_ent_update_hi:
+ent_update_hi:
 	byte #>ent_player_update
         byte #>ent_krok_update
-state_level_ent_render_lo:
+ent_render_lo:
 	byte #<ent_player_render
         byte #<ent_krok_render
-state_level_ent_render_hi:
+ent_render_hi:
 	byte #>ent_player_render
         byte #>ent_krok_render
+ent_ram_offset_table:
+	hex 00102030405060708090a0b0c0d0e0f0
