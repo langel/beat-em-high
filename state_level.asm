@@ -2,7 +2,7 @@
 state_level_init: subroutine
         
 ; SPRITE 0 SETUP
-	lda #$29
+	lda #$21
         sta oam_ram_y
 	lda #$ce
         sta oam_ram_spr
@@ -71,6 +71,7 @@ state_level_update: subroutine
         sta scroll_ms
 .scroll_update_done
 
+	jsr state_level_hud_update
 	jsr state_level_plot_update
         
 	rts
