@@ -11,6 +11,11 @@ cart_start: subroutine
 	jsr SetPalette	; set palette colors
         jsr sprites_clear
         
+; seed rng
+	lda #$01
+        sta rng0
+        sta rng1
+        
 ; reset unrom bank
 	BANK_CHANGE 1
         
@@ -93,17 +98,6 @@ nmi_handler: subroutine
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
         
-        
-; SCROOOLLLLL
-        inc scroll_x
-        lda scroll_x
-        ; cmp #$ff ; for right-to-left
-        bne .scroll_update_done
-        inc scroll_ms
-        lda scroll_ms
-        and #$03
-        sta scroll_ms
-.scroll_update_done
 
 
 	BANK_CHANGE 2
@@ -113,73 +107,15 @@ nmi_handler: subroutine
         jsr state_level_update
 
 
-binny_head:
-        ldy #$28
-        lda #$06
-        jsr sprite_4_set_sprite
-        lda #$00
-        jsr sprite_4_set_attr
-        lda #$10
-        jsr sprite_4_set_x
-        lda #$18
-        jsr sprite_4_set_y
-pando_head:
-        ldy #$50
-        lda #$66
-        jsr sprite_4_set_sprite
-        lda #$01
-        jsr sprite_4_set_attr
-        lda #$90
-        jsr sprite_4_set_x
-        lda #$18
-        jsr sprite_4_set_y
 	
         
         
-        
-binny_walk: subroutine
-	lda wtf
-        and #$07
-        bne .not_next
-        inc binny_cycle
-.not_next
-        lda binny_cycle
-        and #$01
-        clc
-        adc #$06
-        asl
-        ldy #$10
-        jsr sprite_6_set_sprite
-        lda #$00
-        jsr sprite_6_set_attr
-        lda #$33
-        jsr sprite_6_set_x
-        lda #$b0
-        jsr sprite_6_set_y
-        
-ponda_walk: subroutine
-	lda wtf
-        and #$07
-        bne .not_next
-        inc ponda_cycle
-.not_next
-        lda ponda_cycle
-        and #$01
-        clc
-        adc #$06
-        asl
-        clc
-        adc #$60
-        ldy #$38
-        jsr sprite_6_set_sprite
-        lda #$01
-        jsr sprite_6_set_attr
-        lda #$48
-        jsr sprite_6_set_x
-        lda #$a8
-        jsr sprite_6_set_y
-        
-        
+        lda rng0
+        jsr rng_next
+        sta rng0
+        lda rng1
+        jsr rng_prev
+        sta rng1
         inc wtf
         dec nmi_lockout
 nmi_end:

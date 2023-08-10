@@ -27,18 +27,18 @@ wait_sync:
 
 ;;;;; RANDOM NUMBERS
 
-NextRandom subroutine
+rng_next: subroutine
 	lsr
-        bcc .NoEor
+        bcc .no_eor
         eor #$d4
-.NoEor:
+.no_eor
 	rts
-; Get previous random value
-PrevRandom subroutine
+        
+rng_prev: subroutine
 	asl
-        bcc .NoEor
+        bcc .no_eor
         eor #$a9
-.NoEor:
+.no_eor
         rts
         
         

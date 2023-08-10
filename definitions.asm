@@ -167,6 +167,13 @@ NES_MIRR_QUAD	= 8
         REPEND
         ENDM
         
+;;;;;; RNG0_NEXT
+        MAC RNG0_NEXT
+        lda rng0
+        jsr rng_next
+        sta rng0
+        ENDM
+        
 ;;;;; SAVE_REGS - save A/X/Y registers
 
         MAC SAVE_REGS

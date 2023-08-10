@@ -1,6 +1,27 @@
 
 state_level_hud_init: subroutine
-; TOP LINE
+; BINNY HEAD SPRITE
+        ldy #$28
+        lda #$06
+        jsr sprite_4_set_sprite
+        lda #$00
+        jsr sprite_4_set_attr
+        lda #$12
+        jsr sprite_4_set_x
+        lda #$16
+        jsr sprite_4_set_y
+; PANDO HEAD SPRITE
+        ldy #$50
+        lda #$66
+        jsr sprite_4_set_sprite
+        lda #$01
+        jsr sprite_4_set_attr
+        lda #$93
+        jsr sprite_4_set_x
+        lda #$16
+        jsr sprite_4_set_y
+        
+; BG TILE TOP LINE
 	PPU_SETADDR $2041
         lda #$ad
         sta PPU_DATA
@@ -25,7 +46,7 @@ state_level_hud_init: subroutine
         bne .l2
         lda #$af
         sta PPU_DATA
-; BOTTOM LINE
+; BG TILE BOTTOM LINE
 	PPU_SETADDR $20a1
         lda #$cd
         sta PPU_DATA
@@ -50,7 +71,7 @@ state_level_hud_init: subroutine
         bne .l4
         lda #$cf
         sta PPU_DATA
-; VERTICAL LINES
+; BG TILE VERTICAL LINES
 	lda #$04
         sta PPU_CTRL
 	ldx #$bd
@@ -67,7 +88,7 @@ state_level_hud_init: subroutine
         PPU_SETADDR $207e
         stx PPU_DATA
         stx PPU_DATA
-; HEALTH
+; BG TILE HEALTH
 	lda #$00
         sta PPU_CTRL
 	ldx #$cb
@@ -91,7 +112,7 @@ state_level_hud_init: subroutine
         stx PPU_DATA
         stx PPU_DATA
         stx PPU_DATA
-; BINNY
+; BG TILE NAMES
         PPU_SETADDR $2065
         lda #$e0
         sta PPU_DATA

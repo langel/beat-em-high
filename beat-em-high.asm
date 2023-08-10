@@ -56,8 +56,12 @@ sprites_addr:
 	include "state.asm"
 	nop
 	include "state_level.asm"
+        nop
+	include "state_level_ents.asm"
 	nop
 	include "state_level_hud.asm"
+        nop
+	include "state_level_plot.asm"
 	nop
 	include "sprites.asm"
 	nop

@@ -5,6 +5,8 @@
         
 wtf	byte
 nmi_lockout byte
+rng0	byte
+rng1	byte
 temp00	byte
 temp01	byte
 temp02	byte
@@ -13,6 +15,7 @@ temp03	byte
 scroll_x  byte
 scroll_y  byte
 scroll_ms byte ; map screen
+scroll_dir byte
 
 map_ppu_lo byte
 map_ppu_hi byte
