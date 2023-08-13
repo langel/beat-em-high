@@ -189,8 +189,8 @@ Palette:
         ; pando
         hex 0f0c2130
         ; other
-        hex 0f1f2437
-        hex 0f1f2130 
+        hex 0f081a39
+        hex 0f041536 
         
 	hex 0f002630
 	hex 0f2d2630

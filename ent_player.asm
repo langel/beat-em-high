@@ -117,14 +117,14 @@ ent_pando_update: subroutine
         bne .pando_not_next
         inc ponda_cycle
 .pando_not_next
-	lda ent_x,y
+	lda ent_x,x
         sec
         sbc #$08
-        sta ent_sx,y
-	lda ent_y,y
+        sta ent_sx,x
+	lda ent_y,x
         sec
         sbc #$18
-        sta ent_sy,y
+        sta ent_sy,x
 	jmp ent_update_next
 
 

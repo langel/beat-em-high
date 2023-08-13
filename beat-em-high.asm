@@ -70,6 +70,8 @@ sprites_addr:
 	include "ent_player.asm"
 	nop
 	include "ent_krok.asm"
+        nop
+	include "ent_krokw.asm"
 	nop
 
 

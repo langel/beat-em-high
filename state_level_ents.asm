@@ -18,7 +18,17 @@ ent_r3		= $030b
 
 ent_y_sort	= $0400
 
-; XXX need a bubble sort sprite priority
+moar_ents	= $043f
+
+ent_player_id	EQM	$00
+ent_krok_id	EQM	$01
+ent_krokw_id	EQM	$02
+
+; TO DO
+;	- sort set management
+;         add/remove ents 
+;	- blitting two sort orders
+;	  y+x/2 vs. y-x/2
 
 state_level_ents_init: subroutine
         ; init types
@@ -68,6 +78,32 @@ state_level_ents_init: subroutine
         lda #$c0
         sta ent_y+$10
         sta ent_r1+$10
+; LET's TEST SOME STUFF
+	lda #$ff
+        sta moar_ents
+	lda moar_ents
+        bne .do_moar_ents
+        rts
+.do_moar_ents
+	lda #$09
+        sta temp00
+.load_moar_ents_loop
+	lda temp00
+        clc
+        adc #$03
+        tax
+        sta ent_y_sort,x
+        lda temp00
+        asl
+        asl
+        asl
+        asl
+        clc
+        adc #$30
+        tax
+        jsr ent_krokw_init
+	dec temp00
+        bne .load_moar_ents_loop
 	rts
 
 
@@ -79,13 +115,13 @@ _ENT_UPDATE:
         lda #$10
         sta ent_oam_offset
 .ent_update_loop
-	ldy ent_ram_offset
-        lda ent_type,y
+	ldx ent_ram_offset
+        lda ent_type,x
         bmi ent_update_next
-        tax
-        lda ent_update_lo,x
+        tay
+        lda ent_update_lo,y
         sta temp00
-        lda ent_update_hi,x
+        lda ent_update_hi,y
         sta temp01
         jmp (temp00)
 ent_update_next:
@@ -173,18 +209,22 @@ ent_render_next:
         
 ent_size:
 	; number of sprites * 4
-	byte 24,16
+	byte 24,16,16
 ent_update_lo:
 	byte #<ent_player_update
         byte #<ent_krok_update
+        byte #<ent_krokw_update
 ent_update_hi:
 	byte #>ent_player_update
         byte #>ent_krok_update
+        byte #>ent_krokw_update
 ent_render_lo:
 	byte #<ent_player_render
         byte #<ent_krok_render
+        byte #<ent_krokw_render
 ent_render_hi:
 	byte #>ent_player_render
         byte #>ent_krok_render
+        byte #>ent_krokw_render
 ent_ram_offset_table:
 	hex 00102030405060708090a0b0c0d0e0f0
