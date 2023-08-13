@@ -63,14 +63,6 @@ ent_binny_update: subroutine; BINNY
         sta ent_r1
 .binny_skip_new_targ
         
-        lda ent_x,y
-        sec
-        sbc #$08
-        sta ent_sx,y
-        lda ent_y,y
-        sec
-        sbc #$18
-        sta ent_sy,y
 	jmp ent_update_next
         
         
@@ -88,20 +80,26 @@ ent_binny_render: subroutine
         adc #$06
         asl
         jsr sprite_6_set_sprite
-        lda ent_sy
+        lda ent_y,x
+        sec
+        sbc #$18
         jsr sprite_6_set_y
         lda ent_r2
         bmi .binny_mirror
 .binny_not_mirror
         lda #$00
         jsr sprite_6_set_attr
-        lda ent_sx
+        lda ent_x,x
+        sec
+        sbc #$08
         jsr sprite_6_set_x
         jmp .binny_done
 .binny_mirror
         lda #$40
         jsr sprite_6_set_attr
-        lda ent_sx
+        lda ent_x,x
+        sec
+        sbc #$08
         jsr sprite_6_set_x_mirror
 .binny_done
 	jmp ent_render_next
@@ -117,19 +115,11 @@ ent_pando_update: subroutine
         bne .pando_not_next
         inc ponda_cycle
 .pando_not_next
-	lda ent_x,x
-        sec
-        sbc #$08
-        sta ent_sx,x
-	lda ent_y,x
-        sec
-        sbc #$18
-        sta ent_sy,x
 	jmp ent_update_next
 
 
 ent_pando_render: subroutine
-	inc ent_r3+$10
+	inc ent_r3,x
         lda ponda_cycle
         and #$01
         clc
@@ -141,8 +131,12 @@ ent_pando_render: subroutine
         jsr sprite_6_set_sprite
         lda #$01
         jsr sprite_6_set_attr
-        lda ent_sx+$10
+	lda ent_x,x
+        sec
+        sbc #$08
         jsr sprite_6_set_x
-        lda ent_sy+$10
+	lda ent_y,x
+        sec
+        sbc #$18
         jsr sprite_6_set_y
 	jmp ent_render_next

@@ -5,9 +5,6 @@ ent_krokw_init: subroutine
         ; x
         RNG0_NEXT
         sta ent_x,x
-        sec
-        sbc #$08
-        sta ent_sx,x
         ; y
         RNG0_NEXT
         lsr
@@ -15,9 +12,6 @@ ent_krokw_init: subroutine
         clc
         adc #$9e
         sta ent_y,x
-        sec
-        sbc #$10
-        sta ent_sy,x
         ; dir
         RNG0_NEXT
         RNG0_NEXT
@@ -43,7 +37,6 @@ ent_krokw_render:
 	lda ent_x,x
         sec
         sbc #$08
-        sta ent_sx,x
         jsr sprite_4_set_x
         lda ent_y,x
         sec

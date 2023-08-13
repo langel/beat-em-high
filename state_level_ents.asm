@@ -9,12 +9,16 @@ ent_type	= $0300
 ent_hp		= $0301
 ent_x		= $0302
 ent_y		= $0303
-ent_sx		= $0304
-ent_sy		= $0305
+ent_ms		= $0304
+ent_mx		= $0305
+ent_x_lo	= $0306
+ent_y_lo	= $0307
 ent_r0		= $0308
 ent_r1		= $0309
 ent_r2		= $030a
 ent_r3		= $030b
+ent_s1		= $030e ; sort order 1 (y+x/2)
+ent_s2		= $030f ; sort order 2 (y-x/2)
 
 ent_y_sort	= $0400
 
