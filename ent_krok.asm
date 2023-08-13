@@ -55,4 +55,4 @@ ent_krok_render: subroutine
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
-	jmp ent_render_next
+	jmp ent_render_cont

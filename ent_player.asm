@@ -102,7 +102,7 @@ ent_binny_render: subroutine
         sbc #$08
         jsr sprite_6_set_x_mirror
 .binny_done
-	jmp ent_render_next
+	jmp ent_render_cont
      
      
      
@@ -139,4 +139,4 @@ ent_pando_render: subroutine
         sec
         sbc #$18
         jsr sprite_6_set_y
-	jmp ent_render_next
+	jmp ent_render_cont

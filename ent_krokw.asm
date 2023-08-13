@@ -19,12 +19,21 @@ ent_krokw_init: subroutine
         sta ent_r0,x
 	rts
         
-ent_krokw_update:
+ent_krokw_update: subroutine
+	RNG0_NEXT
+        lsr
+        and #$01
+        beq .not_forward
 	inc ent_x,x
+.not_forward
+	RNG0_NEXT
+        and #$01
+        bne .not_around
+	inc ent_r0,x
+.not_around
 	jmp ent_update_next
 
 ent_krokw_render:
-	inc ent_r0,x
 	lda ent_r0,x
         tax
         lda sine_table,x
@@ -52,4 +61,4 @@ ent_krokw_render:
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
-	jmp ent_render_next
+	jmp ent_render_cont

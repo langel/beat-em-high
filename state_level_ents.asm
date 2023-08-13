@@ -1,9 +1,9 @@
 
 
+oam_ram_att	= $0202
+oam_ram_spr	= $0201
 oam_ram_x	= $0203
 oam_ram_y	= $0200
-oam_ram_spr	= $0201
-oam_ram_att	= $0202
 
 ent_type	= $0300
 ent_hp		= $0301
@@ -21,6 +21,8 @@ ent_s1		= $030e ; sort order 1 (y+x/2)
 ent_s2		= $030f ; sort order 2 (y-x/2)
 
 ent_y_sort	= $0400
+ent_sort1	= $0410
+ent_sort2	= $0420
 
 moar_ents	= $043f
 
@@ -144,7 +146,6 @@ _ENT_Y_SORT:
         lda ent_ram_offset_table,x
         tax
         lda ent_y,x
-        sta $0410,x
         sta temp03
         iny
         lda ent_y_sort,y
@@ -165,24 +166,17 @@ _ENT_Y_SORT:
 .ent_y_loop_check
 	cpy #$0f
         bne 	.ent_y_sort_loop
-_ENT_SPRITE_CLEAR:
-	lda #$ff
-        ldx #$10
-.ent_sprite_clear_loop
-	sta $0200,x
-        inx
-        bne .ent_sprite_clear_loop
         ; ent render
 _ENT_RENDER:
         lda #$00
         sta ent_y_sort_pos
-	lda #$10
+	lda #$28
         sta ent_oam_offset
 .ent_render_loop
 	lda ent_y_sort_pos
         tay
         lda ent_y_sort,y
-        bmi ent_render_next
+        bmi .ent_render_next
         tay
         lda ent_ram_offset_table,y
         sta ent_ram_offset
@@ -196,7 +190,7 @@ _ENT_RENDER:
         ldx ent_ram_offset
         ldy ent_oam_offset
         jmp (temp00)
-ent_render_next:
+ent_render_cont:
 	ldx ent_ram_offset
         lda ent_type,x
         tax
@@ -204,10 +198,19 @@ ent_render_next:
         clc
         adc ent_oam_offset
         sta ent_oam_offset
+.ent_render_next
         inc ent_y_sort_pos
         lda ent_y_sort_pos
         cmp #$10
         bne .ent_render_loop
+        ; clear unused sprites
+_ENT_SPRITE_CLEAR:
+	lda #$ff
+        ldx ent_oam_offset
+.ent_sprite_clear_loop
+	sta $0200,x
+        inx
+        bne .ent_sprite_clear_loop
 	rts
         
         
