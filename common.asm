@@ -116,6 +116,54 @@ distance: subroutine
         rts
         
         
+shift_percent: subroutine
+	; a = 8bit base value
+        ; x = 8bit percentage
+        sta temp00
+        txa
+        eor #$ff
+        sta temp01
+        lda #$00
+        lsr temp00
+        asl temp01
+        bcs .not_7
+        adc temp00
+.not_7
+        lsr temp00
+        asl temp01
+        bcs .not_6
+        adc temp00
+.not_6
+        lsr temp00
+        asl temp01
+        bcs .not_5
+        adc temp00
+.not_5
+        lsr temp00
+        asl temp01
+        bcs .not_4
+        adc temp00
+.not_4
+        lsr temp00
+        asl temp01
+        bcs .not_3
+        adc temp00
+.not_3
+        lsr temp00
+        asl temp01
+        bcs .not_2
+        adc temp00
+.not_2
+        lsr temp00
+        asl temp01
+        bcs .not_1
+        adc temp00
+.not_1
+	rts
+
+        
+        
+        
 ;;;;; CONTROLLER READING
 
 BUTTON_A      	EQM 1 << 7

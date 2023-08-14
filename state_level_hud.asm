@@ -44,4 +44,26 @@ state_level_hud_update: subroutine
         jsr sprite_4_set_x
         lda #$0e
         jsr sprite_4_set_y
+        
+; expirement sprite
+	lda #$fa
+        sta oam_ram_spr+4
+        sta oam_ram_spr+$f8
+        lda #$02
+        sta oam_ram_att+4
+        sta oam_ram_att+$f8
+        lda #$26
+        sta oam_ram_y+4
+        sta oam_ram_y+$f8
+        lda wtf
+        sta oam_ram_x+$f8
+        bne .no_reset
+        RNG0_NEXT
+        sta $0505
+.no_reset
+        lda wtf
+        ldx $0505
+        jsr shift_percent
+        sta oam_ram_x+4
+        
 	rts
