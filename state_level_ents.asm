@@ -33,8 +33,6 @@ ent_krokw_id	EQM	$02
 ; TO DO
 ;	- sort set management
 ;         add/remove ents 
-;	- blitting two sort orders
-;	  y+x/2 vs. y-x/2
 
 state_level_ents_init: subroutine
         ; init types
@@ -113,6 +111,7 @@ state_level_ents_init: subroutine
 	rts
 
 
+
 state_level_ents_update: subroutine        
         ; ent update
 _ENT_UPDATE:
@@ -123,14 +122,30 @@ _ENT_UPDATE:
 .ent_update_loop
 	ldx ent_ram_offset
         lda ent_type,x
-        bmi ent_update_next
+        bmi .ent_update_next
         tay
         lda ent_update_lo,y
         sta temp00
         lda ent_update_hi,y
         sta temp01
         jmp (temp00)
-ent_update_next:
+ent_update_return:
+;	- blitting two sort orders
+;	  y+x/2 vs. y-x/2
+	ldx ent_ram_offset
+        lda ent_x,x	; y+x/2
+        lsr
+        clc
+        adc ent_y,x
+        sta ent_s1,x
+        lda ent_x,x	; y-x/2
+        lsr
+        sta ent_s2,x
+        lda ent_y,x
+        sec
+        sbc ent_s2,x
+        sta ent_s2,x
+.ent_update_next
 	lda #$10
         clc
         adc ent_ram_offset
@@ -190,7 +205,7 @@ _ENT_RENDER:
         ldx ent_ram_offset
         ldy ent_oam_offset
         jmp (temp00)
-ent_render_cont:
+ent_render_return:
 	ldx ent_ram_offset
         lda ent_type,x
         tax

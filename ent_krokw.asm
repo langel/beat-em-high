@@ -31,7 +31,7 @@ ent_krokw_update: subroutine
         bne .not_around
 	inc ent_r0,x
 .not_around
-	jmp ent_update_next
+	jmp ent_update_return
 
 ent_krokw_render:
 	lda ent_r0,x
@@ -61,4 +61,4 @@ ent_krokw_render:
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
-	jmp ent_render_cont
+	jmp ent_render_return

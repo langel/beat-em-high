@@ -30,7 +30,7 @@ ent_krok_update: subroutine
         adc #$b4
         sta ent_y,x
         
-	jmp ent_update_next
+	jmp ent_update_return
         
         
         
@@ -55,4 +55,4 @@ ent_krok_render: subroutine
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
-	jmp ent_render_cont
+	jmp ent_render_return

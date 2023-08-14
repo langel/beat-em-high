@@ -63,7 +63,7 @@ ent_binny_update: subroutine; BINNY
         sta ent_r1
 .binny_skip_new_targ
         
-	jmp ent_update_next
+	jmp ent_update_return
         
         
         
@@ -102,7 +102,7 @@ ent_binny_render: subroutine
         sbc #$08
         jsr sprite_6_set_x_mirror
 .binny_done
-	jmp ent_render_cont
+	jmp ent_render_return
      
      
      
@@ -115,7 +115,7 @@ ent_pando_update: subroutine
         bne .pando_not_next
         inc ponda_cycle
 .pando_not_next
-	jmp ent_update_next
+	jmp ent_update_return
 
 
 ent_pando_render: subroutine
@@ -139,4 +139,4 @@ ent_pando_render: subroutine
         sec
         sbc #$18
         jsr sprite_6_set_y
-	jmp ent_render_cont
+	jmp ent_render_return

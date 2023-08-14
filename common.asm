@@ -60,6 +60,19 @@ render_enable_bg:
 render_disable:
 	lda #$00
         sta PPU_MASK	
+        
+        
+
+distance: subroutine
+; from https://forums.parallax.com/discussion/147522/dog-leg-hypotenuse-approximation
+; hi = max( a, b )
+; lo = min( a, b )
+; hypot ~= hi + lo/2
+; 
+; but johnybot on nesdev discord said:
+; hi + (lo >> 2) + (lo >> 4) + (lo >> 6) 
+; seems like a much better approximation for 8 bit ASM
+        rts
 	rts
 
 
@@ -83,6 +96,7 @@ shift_multiply: subroutine
         sta temp01
         rts        
         
+        
 shift_divide: subroutine
 	; shift + add division
         ; temp00 = dividend
@@ -103,32 +117,20 @@ shift_divide: subroutine
         rts
         
         
-
-distance: subroutine
-; from https://forums.parallax.com/discussion/147522/dog-leg-hypotenuse-approximation
-; hi = max( a, b )
-; lo = min( a, b )
-; hypot ~= hi + lo/2
-; 
-; but johnybot on nesdev discord said:
-; hi + (lo >> 2) + (lo >> 4) + (lo >> 6) 
-; seems like a much better approximation for 8 bit ASM
-        rts
-        
-        
 shift_percent: subroutine
 	; a = 8bit base value
         ; x = 8bit percentage
+        ; returns result in a
         sta temp00
         txa
         eor #$ff
         sta temp01
-        lda #$00
+        lda #$00	; 12 cycles
         lsr temp00
         asl temp01
         bcs .not_7
         adc temp00
-.not_7
+.not_7			; +15 per bit
         lsr temp00
         asl temp01
         bcs .not_6
@@ -158,8 +160,13 @@ shift_percent: subroutine
         asl temp01
         bcs .not_1
         adc temp00
-.not_1
-	rts
+.not_1		
+        lsr temp00
+        asl temp01
+        bcs .not_0
+        adc temp00
+.not_0			; 15 * 7 + 12
+	rts		; +6 = 123 cycles
 
         
         
