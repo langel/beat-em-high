@@ -49,21 +49,43 @@ state_level_hud_update: subroutine
 	lda #$fa
         sta oam_ram_spr+4
         sta oam_ram_spr+$f8
+        sta oam_ram_spr+$fc
         lda #$02
         sta oam_ram_att+4
         sta oam_ram_att+$f8
+        lda #$03
+        sta oam_ram_att+$fc
         lda #$26
         sta oam_ram_y+4
         sta oam_ram_y+$f8
+        sta oam_ram_y+$fc
         lda wtf
         sta oam_ram_x+$f8
         bne .no_reset
         RNG0_NEXT
         sta $0505
+        tax
+        lda #$ff
+        jsr shift_percent
+        sta $e8
+        lda #$00
+        sta oam_ram_x+$fc
+        sta $e9
+        sta $ea
 .no_reset
+	; rigid
         lda wtf
         ldx $0505
         jsr shift_percent
         sta oam_ram_x+4
-        
+        ; smoother?
+        lda $e8
+        clc
+        adc $e9
+        sta $e9
+        bcs .dont_move_guy
+        inc $ea
+.dont_move_guy
+        lda $ea
+        sta oam_ram_x+$fc
 	rts
