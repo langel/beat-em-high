@@ -57,6 +57,8 @@ sprites_addr:
 	nop
 	include "state.asm"
 	nop
+	include "state_title.asm"
+	nop
 	include "state_level.asm"
         nop
 	include "state_level_cam.asm"

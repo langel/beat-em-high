@@ -38,6 +38,7 @@ cart_start: subroutine
 	dex
         bne .grafx_load_loop
         
+        BANK_CHANGE 0
         jsr state_level_init
         
         
@@ -67,7 +68,11 @@ nmi_handler: subroutine
 	lda #$02
         sta PPU_OAM_DMA
         
-        jsr state_level_render
+        BANK_CHANGE 0
+	; RENDER	va cycles
+        lda state_render_id
+        jmp jump_to_subroutine
+state_render_done:
         
         bit PPU_STATUS
         lda #$00
@@ -98,8 +103,11 @@ nmi_handler: subroutine
         sta PPU_CTRL
         
 
-        BANK_CHANGE 0
-        jsr state_level_update
+	BANK_CHANGE 0
+; main state logic
+	lda state_update_id
+        jsr jsr_to_subroutine
+state_update_done:
 
         lda rng0
         jsr rng_next

@@ -1,6 +1,11 @@
 ppu_popslide	= $0100
 
 state_level_init: subroutine
+        ; set state
+        lda #state_level_update_id
+        sta state_update_id
+        lda #state_level_render_id
+        sta state_render_id
         
 ; SPRITE 0 SETUP
 	lda #$21
@@ -54,7 +59,8 @@ state_level_render: subroutine
    	; reload stack pointer
         ldx temp02		; 88wrong
         txs			; 90wrong
-	rts
+        ;rts
+	jmp state_render_done
         
         
         

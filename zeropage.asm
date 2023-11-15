@@ -17,6 +17,9 @@ scroll_y  byte
 scroll_ms byte ; map screen
 scroll_dir byte
 
+state_render_id	byte
+state_update_id byte
+
 ent_ram_offset	byte
 ent_oam_offset	byte
 ent_y_sort_pos	byte

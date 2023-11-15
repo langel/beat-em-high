@@ -18,6 +18,7 @@ clear_ram: subroutine
         inx		; X = X + 1
         bne .loop	; loop 256 times
         rts
+        
 
 ; wait for VSYNC to start
 wait_sync:
