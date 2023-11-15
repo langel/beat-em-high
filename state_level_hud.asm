@@ -1,7 +1,17 @@
 
+hud_life_ppu_hi	EQM #$20
+hud_life_ppu_lo EQM #$65
+
+hud_life_blob_full	EQM #$cb
+hud_life_blob_empty	EQM #$cc
+
+hud_life_binny_popslide = $0120
+hud_life_pando_popslide	= $0130
+
 state_level_hud_init: subroutine
         
 	PPU_SETADDR $2020
+        ; setup hud in nametable
         ldx #$00
 .hud_tile_loop
         lda hud_tile_table,x
@@ -9,6 +19,16 @@ state_level_hud_init: subroutine
         inx 
         cpx #$80
         bne .hud_tile_loop
+        ; setup lifebars in popslider
+        ldx #$45
+        ldy #$00
+.hud_life_loop
+        lda hud_tile_table,x
+        sta $0120,y
+        inx
+        iny
+        cpx #$48+22
+        bne .hud_life_loop
 	rts
         
 hud_tile_table:
@@ -24,6 +44,68 @@ hud_tile_table:
         
         
 state_level_hud_update: subroutine
+
+; BINNY LIFE BAR
+	ldx #$00
+	lda ent_hp+$00
+        sta temp00
+        beq .binny_fillout_empties
+.binny_not_dead
+        lda #hud_life_blob_full
+        sta hud_life_binny_popslide
+        
+.binny_bar_cache
+	inx
+	lda temp00
+        sec
+        sbc #$1c
+        sta temp00
+        bcc .binny_fillout_empties
+        lda #hud_life_blob_full
+        sta hud_life_binny_popslide,x
+        cpx #$08
+        bne .binny_bar_cache
+        beq .binny_lifebar_done
+
+.binny_fillout_empties
+        lda #hud_life_blob_empty
+        sta hud_life_binny_popslide,x
+        inx
+        cpx #$09
+        bne .binny_fillout_empties
+.binny_lifebar_done
+        
+; PANDO LIFE BAR
+	ldx #$00
+	lda ent_hp+$10
+        sta temp00
+        beq .pando_fillout_empties
+.pando_not_dead
+        lda #hud_life_blob_full
+        sta hud_life_pando_popslide
+        
+.pando_bar_cache
+	inx
+	lda temp00
+        sec
+        sbc #$1c
+        sta temp00
+        bcc .pando_fillout_empties
+        lda #hud_life_blob_full
+        sta hud_life_pando_popslide,x
+        cpx #$08
+        bne .pando_bar_cache
+        beq .pando_lifebar_done
+
+.pando_fillout_empties
+        lda #hud_life_blob_empty
+        sta hud_life_pando_popslide,x
+        inx
+        cpx #$09
+        bne .pando_fillout_empties
+.pando_lifebar_done
+	
+        
 ; BINNY HEAD SPRITE
         ldy #$08
         lda #$06
@@ -45,47 +127,4 @@ state_level_hud_update: subroutine
         lda #$0e
         jsr sprite_4_set_y
         
-; expirement sprite
-	lda #$fa
-        sta oam_ram_spr+4
-        sta oam_ram_spr+$f8
-        sta oam_ram_spr+$fc
-        lda #$02
-        sta oam_ram_att+4
-        sta oam_ram_att+$f8
-        lda #$03
-        sta oam_ram_att+$fc
-        lda #$26
-        sta oam_ram_y+4
-        sta oam_ram_y+$f8
-        sta oam_ram_y+$fc
-        lda wtf
-        sta oam_ram_x+$f8
-        bne .no_reset
-        RNG0_NEXT
-        sta $0505
-        tax
-        lda #$ff
-        jsr shift_percent
-        sta $e8
-        lda #$00
-        sta oam_ram_x+$fc
-        sta $e9
-        sta $ea
-.no_reset
-	; rigid
-        lda wtf
-        ldx $0505
-        jsr shift_percent
-        sta oam_ram_x+4
-        ; smoother?
-        lda $e8
-        clc
-        adc $e9
-        sta $e9
-        bcs .dont_move_guy
-        inc $ea
-.dont_move_guy
-        lda $ea
-        sta oam_ram_x+$fc
 	rts
