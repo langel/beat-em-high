@@ -19,6 +19,7 @@ ent_r2		= $030a
 ent_r3		= $030b
 ent_s1		= $030e ; sort order 1 (y+x/2)
 ent_s2		= $030f ; sort order 2 (y-x/2)
+ent_ram_etc	= $0310
 
 ent_y_sort	= $0400
 ent_sort1	= $0410
