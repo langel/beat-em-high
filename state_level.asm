@@ -6,6 +6,9 @@ state_level_init: subroutine
         sta state_update_id
         lda #state_level_render_id
         sta state_render_id
+        lda #$01
+        sta state_sprite_0
+        jsr render_disable
         
 ; graphx to chr ram
 	BANK_CHANGE 1
@@ -39,6 +42,7 @@ state_level_init: subroutine
         jsr state_level_ents_init
         jsr state_level_hud_init
         jsr state_level_plot_nametable1    
+        jsr render_enable
 	rts
 
 

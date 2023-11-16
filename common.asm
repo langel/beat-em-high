@@ -44,7 +44,7 @@ rng_prev: subroutine
         
         
 ; disable PPU drawing and NMI
-render_enable_all:
+render_enable:
 	lda #MASK_BG|MASK_SPR|MASK_SPR_CLIP|MASK_BG_CLIP
         sta PPU_MASK	; enable rendering
         lda #CTRL_NMI|#CTRL_SPR_1000

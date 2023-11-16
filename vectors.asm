@@ -2,6 +2,7 @@
 cart_start: subroutine
 	NES_INIT	; set up stack pointer, turn off PPU
         jsr wait_sync	; wait for VSYNC
+        jsr wait_sync	; do it twice to be sure
         jsr clear_ram	; clear RAM
 
 ; reset PPU address and scroll registers
@@ -21,11 +22,6 @@ cart_start: subroutine
         BANK_CHANGE 0
         ;jsr state_level_init
         jsr state_title_init
-        
-        
-; activate PPU graphics
-        jsr wait_sync	; wait for VSYNC (and PPU warmup)
-	jsr render_enable_all
         
         
 .endless
@@ -66,6 +62,12 @@ state_render_done:
 	BANK_CHANGE 2
         jsr ftm_frame
         
+        jsr controller_read
+        
+sprite0_wait:
+	lda state_sprite_0
+        beq sprite_0_off
+        
 	; wait for Sprite 0; SPRITE 0 WAIT TIME!!!
 .wait0	bit PPU_STATUS
         bvs .wait0
@@ -82,6 +84,7 @@ state_render_done:
         and #$01
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
+sprite_0_off:
         
 
 	BANK_CHANGE 0

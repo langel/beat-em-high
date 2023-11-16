@@ -6,6 +6,9 @@ state_title_init: subroutine
         sta state_update_id
         lda #state_title_render_id
         sta state_render_id
+        lda #$00
+        sta state_sprite_0
+        jsr render_disable
         
         ; palette
 	PPU_SETADDR $3f00
@@ -99,6 +102,7 @@ state_title_init: subroutine
         inx
         jmp .text_loop
 .text_done
+	jsr render_enable
 	rts
         
         
@@ -109,6 +113,10 @@ state_title_render: subroutine
         
         
 state_title_update: subroutine
+	lda controls
+        beq .do_nothing
+        jsr state_level_init
+.do_nothing
 	rts
         
 state_title_text:        

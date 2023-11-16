@@ -200,7 +200,7 @@ NES_MIRR_QUAD	EQM 8
 ; useful for code where precise timing is required.
 ; LEGAL OPCODE VERSION MAY AFFECT FLAGS (uses 'bit' opcode)
 
-NO_ILLEGAL_OPCODES = 1
+NO_ILLEGAL_OPCODES EQM 1
 
             MAC SLEEP            ;usage: SLEEP n (n>1)
 .CYCLES     SET {1}
