@@ -24,6 +24,8 @@ MAPPER EQM 2
 	org $8000
         rorg $8000
 	include "map_data.asm"
+title_logo_map:
+        incbin "title logo.map"
         nop
         
 	seg CODE_BANK1
@@ -33,6 +35,9 @@ tiles_addr:
 	incbin "street.chr"	; 4k
 sprites_addr:			
 	incbin "sprites.chr"	; 4k
+title_logo_chr:
+        incbin "title logo.chr" ; 2k
+        nop
         
 	seg CODE_BANK2
         org $10000

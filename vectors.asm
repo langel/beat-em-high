@@ -17,29 +17,10 @@ cart_start: subroutine
         sta rng1
         
 ; reset unrom bank
-	BANK_CHANGE 1
-        
-; graphx to chr ram
-	lda #<tiles_addr
-        sta temp00
-        lda #>tiles_addr
-        sta temp01
-        lda #$00
-        sta PPU_ADDR
-        sta PPU_ADDR
-        ldx #$20
-        ldy #$00
-.grafx_load_loop
-	lda (temp00),y
-        sta PPU_DATA
-        iny
-        bne .grafx_load_loop
-        inc temp01
-	dex
-        bne .grafx_load_loop
         
         BANK_CHANGE 0
-        jsr state_level_init
+        ;jsr state_level_init
+        jsr state_title_init
         
         
 ; activate PPU graphics

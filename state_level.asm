@@ -7,6 +7,26 @@ state_level_init: subroutine
         lda #state_level_render_id
         sta state_render_id
         
+; graphx to chr ram
+	BANK_CHANGE 1
+	lda #<tiles_addr
+        sta temp00
+        lda #>tiles_addr
+        sta temp01
+        lda #$00
+        sta PPU_ADDR
+        sta PPU_ADDR
+        ldx #$20
+        ldy #$00
+.grafx_load_loop
+	lda (temp00),y
+        sta PPU_DATA
+        iny
+        bne .grafx_load_loop
+        inc temp01
+	dex
+        bne .grafx_load_loop
+        
 ; SPRITE 0 SETUP
 	lda #$21
         sta oam_ram_y
@@ -59,7 +79,6 @@ state_level_render: subroutine
    	; reload stack pointer
         ldx temp02		; 88wrong
         txs			; 90wrong
-        ;rts
 	jmp state_render_done
         
         
