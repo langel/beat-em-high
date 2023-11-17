@@ -19,9 +19,9 @@ cart_start: subroutine
 ; reset unrom bank
         
         BANK_CHANGE 0
-        jsr state_level_init
+        ;jsr state_level_init
         ;jsr state_title_init
-        ;jsr state_intro_init
+        jsr state_intro_init
         
         
 .endless
@@ -74,6 +74,7 @@ sprite0_wait:
         lda #$c0
 .wait1	bit PPU_STATUS
         beq .wait1
+sprite_0_off:
         
         bit PPU_STATUS
         lda scroll_x
@@ -84,7 +85,6 @@ sprite0_wait:
         and #$01
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
-sprite_0_off:
         
 
 	BANK_CHANGE 0

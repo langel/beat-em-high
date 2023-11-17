@@ -38,6 +38,8 @@ sprites_addr:
 	incbin "sprites.chr"	; 4k
 title_logo_chr:
         incbin "title logo.chr" ; 2k
+char_tiles:
+	incbin "char tiles.chr"	; 2k
         nop
         
 	seg CODE_BANK2
