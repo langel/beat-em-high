@@ -1,5 +1,19 @@
 ppu_popslide	= $0100
 
+
+state_level_palettes:
+	hex 0f3d2d30 
+        hex 0f3d2c20 
+        hex 0f3d1627 
+        hex 0f3d1939  
+        ; binny
+        hex 0f072437
+        ; pando
+        hex 0f0c2130
+        ; other
+        hex 0f081a39
+        hex 0f041536 
+
 state_level_init: subroutine
         ; set state
         lda #state_level_update_id
@@ -9,6 +23,26 @@ state_level_init: subroutine
         lda #$01
         sta state_sprite_0
         jsr render_disable
+        
+        lda #$20
+        ldx #text_space_pattern_id
+        jsr clear_nametable
+        lda #$24
+        ldx #text_space_pattern_id
+        jsr clear_nametable
+        lda #$23
+        ldx #$00
+        jsr clear_attributes
+        
+        ; set palette colors
+	PPU_SETADDR $3f00
+        ldy #0
+.palette_loop
+	lda state_level_palettes,y
+	sta PPU_DATA
+        iny		
+        cpy #32		
+	bne .palette_loop
         
 ; graphx to chr ram
 	BANK_CHANGE 1

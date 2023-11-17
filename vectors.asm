@@ -9,7 +9,6 @@ cart_start: subroutine
         lda #0
         sta PPU_SCROLL
         sta PPU_SCROLL  ; PPU scroll = $0000
-	jsr SetPalette	; set palette colors
         jsr sprites_clear
         
 ; seed rng

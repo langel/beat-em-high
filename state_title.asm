@@ -10,6 +10,13 @@ state_title_init: subroutine
         sta state_sprite_0
         jsr render_disable
         
+        lda #$20
+        ldx #text_space_pattern_id
+        jsr clear_nametable
+        lda #$23
+        ldx #$00
+        jsr clear_attributes
+        
         ; palette
 	PPU_SETADDR $3f00
         lda #$07
@@ -71,7 +78,7 @@ state_title_init: subroutine
         sta temp01
         lda #$20
         sta PPU_ADDR
-        lda #$60
+        lda #$80
         sta PPU_ADDR
         lda #$00
         sta PPU_CTRL
@@ -90,18 +97,33 @@ state_title_init: subroutine
         bne .chr_load_loop2
         
         ; text on screen
-        lda #$22
+        ; PRESENTS
+        lda #$20
         sta PPU_ADDR
-        lda #$67
+        lda #$42
         sta PPU_ADDR
         ldx #$00
 .text_loop
-	lda state_title_text,x
+	lda text_miau__iloveui__puke7__present,x
         beq .text_done
         sta PPU_DATA
         inx
         jmp .text_loop
 .text_done
+        ; DEMO
+        lda #$22
+        sta PPU_ADDR
+        lda #$05
+        sta PPU_ADDR
+        ldx #$00
+.demo_loop
+	lda text_NesDEV_COMPO_2023_Demo,x
+        beq .demo_done
+        sta PPU_DATA
+        inx
+        jmp .demo_loop
+.demo_done
+
 	jsr render_enable
 	rts
         
@@ -119,5 +141,10 @@ state_title_update: subroutine
 .do_nothing
 	rts
         
-state_title_text:        
- hex e7deecdddeeffadce8e6e9e8fad2d0d2d300
+        
+text_space_pattern_id EQM $fa
+
+text_miau__iloveui__puke7__present:
+ hex e6e2daeefafae2e5e8efdeeee2fafae9eee4ded7fae9ebdeecdee7ed00
+text_NesDEV_COMPO_2023_Demo:
+ hex e7deecdddeeffadce8e6e9e8fad2d0d2d3fadddee6e800

@@ -20,6 +20,10 @@ scroll_dir byte
 state_render_id	byte
 state_update_id byte
 state_sprite_0	byte
+state00	byte
+state01	byte
+state02 byte
+state03 byte
 
 ent_ram_offset	byte
 ent_oam_offset	byte

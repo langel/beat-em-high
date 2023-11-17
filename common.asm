@@ -1,5 +1,39 @@
 ;;;;; SUBROUTINES
 
+clear_nametable: subroutine
+	; a = high address
+        ; x = fill pattern id
+        sta PPU_ADDR
+        lda #$00
+        sta PPU_ADDR
+        txa
+        ldx #$04
+        ldy #$00
+.inner
+	sta PPU_DATA
+        iny
+        bne .inner
+.outer
+	inc temp01
+        dex
+        bne .inner
+	rts
+        
+clear_attributes: subroutine
+	; a = high address
+        ; x = fill attribute value
+        sta PPU_ADDR
+        lda #$c0
+        sta PPU_ADDR
+        txa
+        ldy #$c0
+.loop
+	sta PPU_DATA
+        iny
+        bne .loop
+	rts
+        
+
 clear_ram: subroutine
 	lda #0		; A = 0
         tax		; X = 0
@@ -219,39 +253,9 @@ controller_read: subroutine
 
   
         
-; set palette colors
-SetPalette: subroutine
-; set PPU address to palette start
-	PPU_SETADDR $3f00
-        ldy #0
-.loop:
-	lda Palette,y	; lookup byte in ROM
-	sta PPU_DATA	; store byte to PPU data
-        iny		; Y = Y + 1
-        cpy #32		; is Y equal to 32?
-	bne .loop	; not yet, loop
-        rts		; return to caller
+
         
 ;;;;; CONSTANT DATA
-
-Palette:
-        
-	hex 0f3d2d30 
-        hex 0f3d2c20 
-        hex 0f3d1627 
-        hex 0f3d1939  
-        ; binny
-        hex 0f072437
-        ; pando
-        hex 0f0c2130
-        ; other
-        hex 0f081a39
-        hex 0f041536 
-        
-	hex 0f002630
-	hex 0f2d2630
-	hex 0f2d2630
-	hex 0f220430
 
 
 sine_table:
