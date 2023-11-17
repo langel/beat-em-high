@@ -126,6 +126,19 @@ NES_MIRR_QUAD	EQM 8
         lda #<{1}	; lower byte
         sta PPU_ADDR
         ENDM
+        
+;;;;; PPU_PLOT_TEXT <nametable address>, <text label>
+	MAC PPU_PLOT_TEXT
+        PPU_SETADDR {1}
+        ldx #$00
+.text_loop
+	lda {2},x
+        beq .text_done
+        sta PPU_DATA
+        inx
+        jmp .text_loop
+.text_done
+	ENDM
 
 ;;;;; PPU_SETVALUE <value> - feed 8-bit value to PPU
         

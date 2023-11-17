@@ -1,7 +1,7 @@
 ppu_popslide	= $0100
 
 
-state_level_palettes:
+state_level_00_palettes:
 	hex 0f3d2d30 
         hex 0f3d2c20 
         hex 0f3d1627 
@@ -13,6 +13,18 @@ state_level_palettes:
         ; other
         hex 0f081a39
         hex 0f041536 
+        
+state_level_00_load_palettes: subroutine
+	PPU_SETADDR $3f00
+        ldy #0
+.palette_loop
+	lda state_level_00_palettes,y
+	sta PPU_DATA
+        iny		
+        cpy #32		
+	bne .palette_loop
+        rts
+        
 
 state_level_init: subroutine
         ; set state
@@ -34,15 +46,7 @@ state_level_init: subroutine
         ldx #$00
         jsr clear_attributes
         
-        ; set palette colors
-	PPU_SETADDR $3f00
-        ldy #0
-.palette_loop
-	lda state_level_palettes,y
-	sta PPU_DATA
-        iny		
-        cpy #32		
-	bne .palette_loop
+        jsr state_level_00_load_palettes
         
 ; graphx to chr ram
 	BANK_CHANGE 1

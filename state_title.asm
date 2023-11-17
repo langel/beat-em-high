@@ -53,13 +53,13 @@ state_title_init: subroutine
         ; character set
 	lda #<tiles_addr
         sta temp00
-        lda #>tiles_addr+$08
+        lda #>tiles_addr+$0d
         sta temp01
-        lda #$08
+        lda #$0d
         sta PPU_ADDR
         lda #$00
         sta PPU_ADDR
-        ldx #$08
+        ldx #$03
         ldy #$00
 .char_load_loop
 	lda (temp00),y
@@ -104,7 +104,7 @@ state_title_init: subroutine
         sta PPU_ADDR
         ldx #$00
 .text_loop
-	lda text_miau__iloveui__puke7__present,x
+	lda text_000,x
         beq .text_done
         sta PPU_DATA
         inx
@@ -117,7 +117,7 @@ state_title_init: subroutine
         sta PPU_ADDR
         ldx #$00
 .demo_loop
-	lda text_NesDEV_COMPO_2023_Demo,x
+	lda text_001,x
         beq .demo_done
         sta PPU_DATA
         inx
@@ -141,10 +141,3 @@ state_title_update: subroutine
 .do_nothing
 	rts
         
-        
-text_space_pattern_id EQM $fa
-
-text_miau__iloveui__puke7__present:
- hex e6e2daeefafae2e5e8efdeeee2fafae9eee4ded7fae9ebdeecdee7ed00
-text_NesDEV_COMPO_2023_Demo:
- hex e7deecdddeeffadce8e6e9e8fad2d0d2d3fadddee6e800

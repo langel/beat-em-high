@@ -24,6 +24,7 @@ MAPPER EQM 2
 	org $8000
         rorg $8000
 	include "map_data.asm"
+        nop
 title_logo_map:
         incbin "title logo.map"
         nop
@@ -63,6 +64,8 @@ title_logo_chr:
 	include "state.asm"
 	nop
 	include "state_title.asm"
+	nop
+	include "state_intro.asm"
 	nop
 	include "state_level.asm"
         nop
