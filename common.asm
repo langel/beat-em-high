@@ -293,8 +293,8 @@ sine_table:
 	hex 676a6d707376797c
         
         
-        
 text_space_pattern_id EQM $fa
+
 text_000:	; miau  iloveui  puke7  present
  hex e6e2daeefafae2e5e8efdeeee2fafae9eee4ded7fafae9ebdeecdee7ed00
 text_001:	; NesDEV COMPO 2023 Demo
@@ -311,5 +311,11 @@ text_006:	; Pesky dingles,
  hex e9deece4f2fadde2e7e0e5deecf700
 text_007:	; They never learn!
  hex ede1def2fae7deefdeebfae5dedaebe7f400
-text_008:	; Let's KICK KROK!!
- hex e5deedcfecfae4e2dce4fae4ebe8e4f4f400
+text_008:	; Lets
+ hex e5deedec00
+text_009:	; KICK
+ hex e4e2dce400
+text_00a:	; KROK
+ hex e4ebe8e400
+text_00b:	; #@0!
+ hex f8f9d0f400

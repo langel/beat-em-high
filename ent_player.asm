@@ -132,7 +132,6 @@ ent_pando_render: subroutine
         asl
         clc
         adc #$60
-        sty $03ef
         jsr sprite_6_set_sprite
         lda #$01
         jsr sprite_6_set_attr

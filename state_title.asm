@@ -137,7 +137,7 @@ state_title_render: subroutine
 state_title_update: subroutine
 	lda controls
         beq .do_nothing
-        jsr state_level_init
+        jsr state_intro_init
 .do_nothing
 	rts
         

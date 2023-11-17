@@ -48,7 +48,7 @@ state_level_init: subroutine
         
         jsr state_level_00_load_palettes
         
-; graphx to chr ram
+; grafx to chr ram
 	BANK_CHANGE 1
 	lda #<tiles_addr
         sta temp00
