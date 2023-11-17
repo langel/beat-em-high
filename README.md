@@ -3,6 +3,19 @@ beat-em-high
 
 [Open this project in 8bitworkshop](http://8bitworkshop.com/redir.html?platform=nes&githubURL=https%3A%2F%2Fgithub.com%2Flangel%2Fbeat-em-high&file=beat-em-high.asm).
 
+TODO:
+	music play more than one track
+	sfx play over music
+	intro cutscenery
+	basic gameplay
+		spawn kroks from doorway
+		scroll to next door after defeating kroks
+		player controls
+		krok states and attacks
+	boss screen
+	death sequence
+	game over sequence
+
 
 basic UNROM layout (4 banks of 16kb):
 
