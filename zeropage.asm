@@ -28,6 +28,7 @@ state03 byte
 ent_ram_offset	byte
 ent_oam_offset	byte
 ent_y_sort_pos	byte
+ent_loop_slot	byte
 
 map_ppu_lo byte
 map_ppu_hi byte

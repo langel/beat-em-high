@@ -21,11 +21,12 @@ ent_s1		= $030e ; sort order 1 (y+x/2)
 ent_s2		= $030f ; sort order 2 (y-x/2)
 ent_ram_etc	= $0310
 
-ent_y_sort	= $0400
-ent_sort1	= $0410
-ent_sort2	= $0420
+ent_y_sortup	= $0400
+ent_y_sortdown	= $0410
+ent_sort1	= $0420
+ent_sort2	= $0430
+ent_y_val	= $0440
 
-moar_ents	= $043f
 
 ent_player_id	EQM	$00
 ent_krok_id	EQM	$01
@@ -36,6 +37,7 @@ ent_krokw_id	EQM	$02
 ;         add/remove ents 
 
 state_level_ents_init: subroutine
+	jsr ent_reset_sorts
         ; init types
         lda #$00
         sta temp00
@@ -53,7 +55,7 @@ state_level_ents_init: subroutine
         lda #$ff
         ldx #$0f
 .y_clear
-	sta $0400,x
+	;sta $0400,x
         dex
         bpl .y_clear
         
@@ -63,12 +65,6 @@ state_level_ents_init: subroutine
         sta ent_type+$10
         lda #$01
         sta ent_type+$20
-        ldx #$00
-        stx ent_y_sort+0
-        inx
-        stx ent_y_sort+1
-        inx
-        stx ent_y_sort+2
 	; binny init pos
 	lda #$33
         sta ent_x
@@ -84,20 +80,10 @@ state_level_ents_init: subroutine
         sta ent_y+$10
         sta ent_r1+$10
 ; LET's TEST SOME STUFF
-	lda #$ff
-        sta moar_ents
-	lda moar_ents
-        bne .do_moar_ents
-        rts
 .do_moar_ents
 	lda #$09
         sta temp00
 .load_moar_ents_loop
-	lda temp00
-        clc
-        adc #$03
-        tax
-        sta ent_y_sort,x
         lda temp00
         asl
         asl
@@ -113,11 +99,12 @@ state_level_ents_init: subroutine
 
 
 
-state_level_ents_update: subroutine        
-        ; ent update
-_ENT_UPDATE:
+state_level_ents_update: subroutine      
+
+_ENT_UPDATE
         lda #$00
         sta ent_ram_offset
+        sta ent_loop_slot
         lda #$10
         sta ent_oam_offset
 .ent_update_loop
@@ -131,73 +118,89 @@ _ENT_UPDATE:
         sta temp01
         jmp (temp00)
 ent_update_return:
+_ENT_Y_PRE_SORT
 ;	- blitting two sort orders
 ;	  y+x/2 vs. y-x/2
+	ldy ent_loop_slot
 	ldx ent_ram_offset
-        lda ent_x,x	; y+x/2
+        lda ent_type,x
+        cmp #$ff
+        bne .not_empty_ent_slot
+        sta ent_sort1,y
+        lda #$00
+        sta ent_sort2,y
+        jmp .ent_update_next
+.not_empty_ent_slot
+        ; offset y pos
+        lda ent_y,x
+        sta ent_y_val,y
+        sec
+        sbc #$40
+        sta temp00	
+        lda ent_x,x	; y+x/4
+        lsr
         lsr
         clc
-        adc ent_y,x
+        adc temp00	; offset y
         sta ent_s1,x
-        lda ent_x,x	; y-x/2
+        sta ent_sort1,y
+        lda ent_x,x	; y-x/4
+        lsr
         lsr
         sta ent_s2,x
-        lda ent_y,x
+        lda temp00	; offset y
         sec
         sbc ent_s2,x
         sta ent_s2,x
+        sta ent_sort2,y
 .ent_update_next
+        inc ent_loop_slot
 	lda #$10
         clc
         adc ent_ram_offset
         sta ent_ram_offset
         bne .ent_update_loop
-        ; ent y sort
-_ENT_Y_SORT:
+        
+_ENT_Y_SORT
+_sort_up:
         ldy #$00
 .ent_y_sort_loop
-        lda ent_y_sort,y
+	; grab sortup values
+        lda ent_y_sortup,y
+        tax
+        lda ent_sort1,x
         sta temp00
+        lda ent_y_sortup+1,y
         tax
-        lda ent_ram_offset_table,x
-        tax
-        lda ent_y,x
-        sta temp03
-        iny
-        lda ent_y_sort,y
+        lda ent_sort1,x
         sta temp01
-        tax
-        lda ent_ram_offset_table,x
-        tax
-        lda ent_y,x
-        cmp temp03
-        bcc .not_greater
-.not_lesser
-        lda temp00
-        sta ent_y_sort,y
-        lda temp01
-        sta ent_y_sort-1,y
-        jmp .ent_y_loop_check
-.not_greater
-.ent_y_loop_check
-	cpy #$0f
-        bne 	.ent_y_sort_loop
-        ; ent render
+        cmp temp00
+        bcc .sortup_not_greater
+.sortup_not_lesser
+	lda ent_y_sortup,y
+        ldx ent_y_sortup+1,y
+        sta ent_y_sortup+1,y
+        txa
+        sta ent_y_sortup,y
+.sortup_not_greater
+.sortup_loop_end
+	iny
+        cpy #$0f
+        bne .ent_y_sort_loop
+        
 _ENT_RENDER:
         lda #$00
         sta ent_y_sort_pos
 	lda #$28
         sta ent_oam_offset
 .ent_render_loop
-	lda ent_y_sort_pos
+	ldy ent_y_sort_pos
+        lda ent_y_sortup,y
         tay
-        lda ent_y_sort,y
+        ldx ent_ram_offset_table,y
+        stx ent_ram_offset
+        lda ent_type,x
         bmi .ent_render_next
-        tay
-        lda ent_ram_offset_table,y
-        sta ent_ram_offset
-        tay
-        lda ent_type,y
         tax
         lda ent_render_lo,x
         sta temp00
@@ -219,6 +222,7 @@ ent_render_return:
         lda ent_y_sort_pos
         cmp #$10
         bne .ent_render_loop
+        
         ; clear unused sprites
 _ENT_SPRITE_CLEAR:
 	lda #$ff
@@ -227,6 +231,17 @@ _ENT_SPRITE_CLEAR:
 	sta $0200,x
         inx
         bne .ent_sprite_clear_loop
+	rts
+        
+        
+ent_reset_sorts: subroutine
+	ldy #$0f
+.loop
+	tya
+        sta ent_y_sortup,y
+        sta ent_y_sortdown,y
+        dey
+        bpl .loop
 	rts
         
         

@@ -101,7 +101,6 @@ state_intro_render: subroutine
         
 state_intro_update: subroutine
 	inc state00
-	inc state00
         bne .not_next_shot
         inc state01
 .not_next_shot
@@ -113,6 +112,7 @@ state_intro_update: subroutine
         bne .step02
         lda state00
         sta scroll_x
+	inc state00
 	inc state00
 	inc state00
         jmp switch_done
