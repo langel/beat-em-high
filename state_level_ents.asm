@@ -164,7 +164,7 @@ _ENT_Y_PRE_SORT
 _ENT_Y_SORT
 _sort_up:
         ldy #$00
-.ent_y_sort_loop
+.sortup_loop
 	; grab sortup values
         lda ent_y_sortup,y
         tax
@@ -186,16 +186,55 @@ _sort_up:
 .sortup_loop_end
 	iny
         cpy #$0f
-        bne .ent_y_sort_loop
+        bne .sortup_loop
+_sort_down:
+        ldy #$00
+.sortdown_loop
+	; grab sortdown values
+        lda ent_y_sortdown,y
+        tax
+        lda ent_sort2,x
+        sta temp00
+        lda ent_y_sortdown+1,y
+        tax
+        lda ent_sort2,x
+        sta temp01
+        cmp temp00
+        bcc .sortdown_not_greater
+.sortdown_not_lesser
+	lda ent_y_sortdown,y
+        ldx ent_y_sortdown+1,y
+        sta ent_y_sortdown+1,y
+        txa
+        sta ent_y_sortdown,y
+.sortdown_not_greater
+.sortdown_loop_end
+	iny
+        cpy #$0f
+        bne .sortdown_loop
         
 _ENT_RENDER:
+	lda #$04
+        sta ent_sort_hi
+        lda wtf
+        lsr
+        and #$01
+        beq .ref_sortdown
+.ref_sortup
+	lda #$10
+        sta ent_sort_lo
+        jmp .ref_set
+.ref_sortdown
+	lda #$00
+        sta ent_sort_lo
+.ref_set
         lda #$00
         sta ent_y_sort_pos
 	lda #$28
         sta ent_oam_offset
 .ent_render_loop
 	ldy ent_y_sort_pos
-        lda ent_y_sortup,y
+        lda (ent_sort_lo),y
         tay
         ldx ent_ram_offset_table,y
         stx ent_ram_offset

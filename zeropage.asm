@@ -29,6 +29,9 @@ ent_ram_offset	byte
 ent_oam_offset	byte
 ent_y_sort_pos	byte
 ent_loop_slot	byte
+ent_sort_lo	byte
+ent_sort_hi	byte
+
 
 map_ppu_lo byte
 map_ppu_hi byte

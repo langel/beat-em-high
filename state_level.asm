@@ -11,8 +11,8 @@ state_level_00_palettes:
         ; pando
         hex 0f0c2130
         ; other
-        hex 0f081a39
-        hex 0f041536 
+        hex 0f081a38
+        hex 0f0a391a
         
 state_level_00_load_palettes: subroutine
 	PPU_SETADDR $3f00
