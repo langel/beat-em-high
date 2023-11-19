@@ -311,20 +311,34 @@ ents_reset_sorts: subroutine
         
 ent_size:
 	; number of sprites * 4
-	byte 24,16,16
+	byte 24,16,16,64
+ent_init_lo:
+	byte #<ent_player_init
+        byte #<ent_krok_init
+        byte #<ent_krokw_init
+        byte #<ent_krok_boss_init
+ent_init_hi:
+	byte #>ent_player_init
+        byte #>ent_krok_init
+        byte #>ent_krokw_init
+        byte #>ent_krok_boss_init
 ent_update_lo:
 	byte #<ent_player_update
         byte #<ent_krok_update
         byte #<ent_krokw_update
+        byte #<ent_krok_boss_update
 ent_update_hi:
 	byte #>ent_player_update
         byte #>ent_krok_update
         byte #>ent_krokw_update
+        byte #>ent_krok_boss_update
 ent_render_lo:
 	byte #<ent_player_render
         byte #<ent_krok_render
         byte #<ent_krokw_render
+        byte #<ent_krok_boss_render
 ent_render_hi:
 	byte #>ent_player_render
         byte #>ent_krok_render
         byte #>ent_krokw_render
+        byte #>ent_krok_boss_render

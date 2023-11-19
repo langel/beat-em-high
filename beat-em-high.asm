@@ -40,6 +40,8 @@ title_logo_chr:
         incbin "title logo.chr" ; 2k
 char_tiles:
 	incbin "char tiles.chr"	; 2k
+boss_krok_chr:
+	incbin "boss_krok.chr"	; 256 bytes
         nop
         
 	seg CODE_BANK2
@@ -86,6 +88,8 @@ char_tiles:
 	include "ent_binny.asm"
 	nop
 	include "ent_krok.asm"
+        nop
+	include "ent_boss_krok.asm"
 	nop
 	include "ent_title_player.asm"
 	nop

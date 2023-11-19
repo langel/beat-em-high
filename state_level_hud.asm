@@ -29,6 +29,26 @@ state_level_hud_init: subroutine
         iny
         cpx #$48+22
         bne .hud_life_loop
+; BINNY HEAD SPRITE
+        ldy #$08
+        lda #$06
+        jsr sprite_4_set_sprite
+        lda #$00
+        jsr sprite_4_set_attr
+        lda #$12
+        jsr sprite_4_set_x
+        lda #$0e
+        jsr sprite_4_set_y
+; PANDO HEAD SPRITE
+        ldy #$18
+        lda #$66
+        jsr sprite_4_set_sprite
+        lda #$01
+        jsr sprite_4_set_attr
+        lda #$93
+        jsr sprite_4_set_x
+        lda #$0e
+        jsr sprite_4_set_y
 	rts
         
 hud_tile_table:
@@ -106,25 +126,5 @@ state_level_hud_update: subroutine
 .pando_lifebar_done
 	
         
-; BINNY HEAD SPRITE
-        ldy #$08
-        lda #$06
-        jsr sprite_4_set_sprite
-        lda #$00
-        jsr sprite_4_set_attr
-        lda #$12
-        jsr sprite_4_set_x
-        lda #$0e
-        jsr sprite_4_set_y
-; PANDO HEAD SPRITE
-        ldy #$18
-        lda #$66
-        jsr sprite_4_set_sprite
-        lda #$01
-        jsr sprite_4_set_attr
-        lda #$93
-        jsr sprite_4_set_x
-        lda #$0e
-        jsr sprite_4_set_y
         
 	rts

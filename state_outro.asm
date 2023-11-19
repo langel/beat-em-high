@@ -14,10 +14,31 @@ state_outro_init: subroutine
         sta state01
         sta state02
         
+        ; load boss krok
+        
+	BANK_CHANGE 1
+	lda #<boss_krok_chr
+        sta temp00
+        lda #>boss_krok_chr
+        sta temp01
+        lda #$1c
+        sta PPU_ADDR
+        lda #$00
+        sta PPU_ADDR
+        ldy #$00
+.grafx_load_loop
+	lda (temp00),y
+        sta PPU_DATA
+        iny
+        bne .grafx_load_loop
+        inc temp01
+        
         jsr render_enable
 	rts
         
 state_outro_render: subroutine
+        
+	jmp state_render_done
 	; muck up nametable
 	lda wtf
         and #$03
@@ -72,6 +93,8 @@ state_outro_render: subroutine
 	jmp state_render_done
 
 state_outro_update: subroutine
+	jsr ents_system_update
+	rts
 	lda #$00
         sta scroll_ms
 	ldx wtf
