@@ -76,6 +76,8 @@ char_tiles:
 	include "state_level_hud.asm"
         nop
 	include "state_level_plot.asm"
+        nop
+	include "state_outro.asm"
 	nop
 	include "ents_system.asm"
 	nop
