@@ -64,10 +64,10 @@ state_level_ents_init: subroutine
         bpl .y_clear
         
 ; SETUP 3 ENTS for devving :D/
-        lda #$00
+        lda #ent_title_player_id
         sta ent_type+$00
         sta ent_type+$10
-        lda #$01
+        lda #ent_title_krok_elipse_id
         sta ent_type+$20
 	; binny init pos
 	lda #$33
@@ -96,7 +96,7 @@ state_level_ents_init: subroutine
         clc
         adc #$30
         tax
-        jsr ent_krokw_init
+        jsr ent_title_krok_wave_init
 	dec temp00
         bne .load_moar_ents_loop
 	rts
@@ -308,37 +308,63 @@ ents_reset_sorts: subroutine
         bpl .loop
 	rts
         
-        
+     
+
+; ENT TABLES
+ent_pando_id                        EQM	0
+ent_binny_id                        EQM	1
+ent_krok_id                         EQM	2
+ent_boss_krok_id                    EQM	3
+ent_title_player_id                 EQM	4
+ent_title_krok_elipse_id            EQM	5
+ent_title_krok_wave_id              EQM	6
 ent_size:
-	; number of sprites * 4
-	byte 24,16,16,64
+	byte 24,24,16,64,24,16,16
 ent_init_lo:
-	byte #<ent_player_init
-        byte #<ent_krok_init
-        byte #<ent_krokw_init
-        byte #<ent_krok_boss_init
+	byte #<ent_pando_init
+	byte #<ent_binny_init
+	byte #<ent_krok_init
+	byte #<ent_boss_krok_init
+	byte #<ent_title_player_init
+	byte #<ent_title_krok_elipse_init
+	byte #<ent_title_krok_wave_init
 ent_init_hi:
-	byte #>ent_player_init
-        byte #>ent_krok_init
-        byte #>ent_krokw_init
-        byte #>ent_krok_boss_init
+	byte #>ent_pando_init
+	byte #>ent_binny_init
+	byte #>ent_krok_init
+	byte #>ent_boss_krok_init
+	byte #>ent_title_player_init
+	byte #>ent_title_krok_elipse_init
+	byte #>ent_title_krok_wave_init
 ent_update_lo:
-	byte #<ent_player_update
-        byte #<ent_krok_update
-        byte #<ent_krokw_update
-        byte #<ent_krok_boss_update
+	byte #<ent_pando_update
+	byte #<ent_binny_update
+	byte #<ent_krok_update
+	byte #<ent_boss_krok_update
+	byte #<ent_title_player_update
+	byte #<ent_title_krok_elipse_update
+	byte #<ent_title_krok_wave_update
 ent_update_hi:
-	byte #>ent_player_update
-        byte #>ent_krok_update
-        byte #>ent_krokw_update
-        byte #>ent_krok_boss_update
+	byte #>ent_pando_update
+	byte #>ent_binny_update
+	byte #>ent_krok_update
+	byte #>ent_boss_krok_update
+	byte #>ent_title_player_update
+	byte #>ent_title_krok_elipse_update
+	byte #>ent_title_krok_wave_update
 ent_render_lo:
-	byte #<ent_player_render
-        byte #<ent_krok_render
-        byte #<ent_krokw_render
-        byte #<ent_krok_boss_render
+	byte #<ent_pando_render
+	byte #<ent_binny_render
+	byte #<ent_krok_render
+	byte #<ent_boss_krok_render
+	byte #<ent_title_player_render
+	byte #<ent_title_krok_elipse_render
+	byte #<ent_title_krok_wave_render
 ent_render_hi:
-	byte #>ent_player_render
-        byte #>ent_krok_render
-        byte #>ent_krokw_render
-        byte #>ent_krok_boss_render
+	byte #>ent_pando_render
+	byte #>ent_binny_render
+	byte #>ent_krok_render
+	byte #>ent_boss_krok_render
+	byte #>ent_title_player_render
+	byte #>ent_title_krok_elipse_render
+	byte #>ent_title_krok_wave_render

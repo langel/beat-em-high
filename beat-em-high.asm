@@ -93,7 +93,7 @@ boss_krok_chr:
 	nop
 	include "ent_title_player.asm"
 	nop
-	include "ent_title_krok_circle.asm"
+	include "ent_title_krok_elipse.asm"
  	nop
 	include "ent_title_krok_wave.asm"
 

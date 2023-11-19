@@ -1,4 +1,6 @@
 
+
+
 ent_title_krok_wave_init: subroutine
         lda #ent_title_krok_wave_id
         sta ent_type,x
@@ -20,6 +22,7 @@ ent_title_krok_wave_init: subroutine
 	rts
         
         
+        
 ent_title_krok_wave_update: subroutine
 	RNG0_NEXT
         lsr
@@ -33,6 +36,7 @@ ent_title_krok_wave_update: subroutine
 	inc ent_r0,x
 .not_around
 	jmp ent_update_return
+
 
 
 ent_title_krok_wave_render:

@@ -1,13 +1,13 @@
 
-ent_krok_boss_init: subroutine
-	
+
+
+ent_boss_krok_init: subroutine
 	rts
-
-
-ent_krok_boss_update: subroutine
+        
+ent_boss_krok_update: subroutine
 	jmp ent_update_return
-
-ent_krok_boss_render: subroutine
+        
+ent_boss_krok_render: subroutine
         ; x = ent_ram_offset
         ; y = ent_oam_offset
-	rts
+	jmp ent_render_return

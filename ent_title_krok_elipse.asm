@@ -1,4 +1,7 @@
 
+ent_title_krok_elipse_init: subroutine
+	rts
+        
 ent_title_krok_elipse_update: subroutine
         
 ; KROK
