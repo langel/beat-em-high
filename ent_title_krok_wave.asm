@@ -37,16 +37,7 @@ ent_krok_update: subroutine
         
         
 ent_krok_render: subroutine
-	lda ent_x,x
-        sec
-        sbc #$08
-        jsr sprite_4_set_x
-        lda ent_y,x
-        sec
-        sbc #$10
-        jsr sprite_4_set_y
-        lda #$02
-        jsr sprite_4_set_attr
+        ; animation frame
         lda wtf
         lsr
         lsr
@@ -55,4 +46,29 @@ ent_krok_render: subroutine
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
+        ; y position
+        lda ent_y,x
+        sec
+        sbc #$10
+        jsr sprite_4_set_y
+        ; check view direction
+        lda ent_x,x
+        cmp $0312
+        bcs .mirror
+.no_mirror
+	lda ent_x,x
+        sec
+        sbc #$08
+        jsr sprite_4_set_x
+        lda #$02
+        jsr sprite_4_set_attr
+        jmp .done
+.mirror
+	lda ent_x,x
+        sec
+        sbc #$08
+        jsr sprite_4_set_x_mirror
+        lda #$42
+        jsr sprite_4_set_attr
+.done
 	jmp ent_render_return

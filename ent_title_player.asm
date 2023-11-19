@@ -117,6 +117,11 @@ ent_binny_render: subroutine
         
 ent_pando_update: subroutine
 	lda wtf
+        and #$03
+        bne .pando_not_advance
+        inc ent_x,x
+.pando_not_advance
+	lda wtf
         and #$07
         bne .pando_not_next
         inc ponda_cycle

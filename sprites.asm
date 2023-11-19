@@ -59,6 +59,17 @@ sprite_4_set_x: subroutine
 	sta oam_ram_x+$0c,y
 	rts
         
+sprite_4_set_x_mirror: subroutine
+	; a = x pos
+        ; y = oam ram offset
+	sta oam_ram_x+$04,y
+	sta oam_ram_x+$0c,y
+	clc
+	adc #$08
+	sta oam_ram_x,y
+	sta oam_ram_x+$08,y
+	rts
+        
 sprite_4_set_y: subroutine
 	; a = y pos
         ; y = oam ram offset

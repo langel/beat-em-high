@@ -45,16 +45,10 @@ ent_krokw_render:
         adc #$a0
         ldx ent_ram_offset
         sta ent_y,x
-	lda ent_x,x
-        sec
-        sbc #$08
-        jsr sprite_4_set_x
         lda ent_y,x
         sec
         sbc #$10
         jsr sprite_4_set_y
-        lda #$03
-        jsr sprite_4_set_attr
         lda wtf
         lsr
         lsr
@@ -63,4 +57,31 @@ ent_krokw_render:
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
+	lda ent_x,x
+        sec
+        sbc #$08
+        jsr sprite_4_set_x
+        lda #$03
+        jsr sprite_4_set_attr
+        ; check view direction
+        lda ent_x,x
+        cmp $0312
+        bcs .mirror
+.no_mirror
+	lda ent_x,x
+        sec
+        sbc #$08
+        jsr sprite_4_set_x
+        lda #$03
+        jsr sprite_4_set_attr
+        jmp .done
+.mirror
+	lda ent_x,x
+        sec
+        sbc #$08
+        jsr sprite_4_set_x_mirror
+        lda #$43
+        jsr sprite_4_set_attr
+.done
 	jmp ent_render_return
+        
