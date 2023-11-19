@@ -19,8 +19,8 @@ state_title_init: subroutine
         sta state_update_id
         lda #state_title_render_id
         sta state_render_id
-        lda #$00
-        sta state_sprite_0
+        lda #do_nothing_id
+        sta state_sprit0_id
         jsr render_disable
         
         lda #$20

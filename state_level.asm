@@ -1,5 +1,8 @@
 ppu_popslide	= $0100
 
+; state00 = scroll_x
+; state01 = scroll_y
+
 
 state_level_00_palettes:
 	hex 0f3d2d30 
@@ -35,8 +38,8 @@ state_level_init: subroutine
         sta state_update_id
         lda #state_level_render_id
         sta state_render_id
-        lda #$01
-        sta state_sprite_0
+        lda #state_level_sprite_0_id
+        sta state_sprit0_id
         jsr render_disable
         
         lda #$20
@@ -51,6 +54,13 @@ state_level_init: subroutine
         jsr clear_sprites
         
         jsr state_level_00_load_palettes
+        
+        lda #$00
+        sta state00
+        sta state01
+        lda #$ff
+        sta ent_hp
+        sta ent_hp+$10
         
 ; grafx to chr ram
 	BANK_CHANGE 1
@@ -127,6 +137,20 @@ state_level_render: subroutine
         ldx temp02		; 88wrong
         txs			; 90wrong
 	jmp state_render_done
+        
+        
+state_level_sprite_0: subroutine
+        lda scroll_ms
+        and #$01
+        ora #CTRL_NMI|#CTRL_SPR_1000
+        sta PPU_CTRL
+        
+        bit PPU_STATUS
+        lda state00
+        sta PPU_SCROLL
+        lda state01
+        sta PPU_SCROLL  ; PPU scroll = $0000
+        rts
         
         
         

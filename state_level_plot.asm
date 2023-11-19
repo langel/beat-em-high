@@ -122,7 +122,7 @@ state_level_plot_update: subroutine
 	lda #$24
 .nametable_done
         sta map_ppu_hi
-        lda scroll_x
+        lda state00
         lsr
         lsr
         lsr
@@ -130,7 +130,7 @@ state_level_plot_update: subroutine
         adc #$c0
         sta map_ppu_lo
         ; find map data position
-        lda scroll_x
+        lda state00
         lsr
         lsr
         lsr

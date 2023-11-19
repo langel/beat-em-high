@@ -302,7 +302,8 @@ sine_table:
 	hex 4f5255585a5d6164
 	hex 676a6d707376797c
         
-        
+ 
+ 
 text_space_pattern_id EQM $fa
 
 text_000:	; langel iloveui miau  present
@@ -329,3 +330,17 @@ text_00a:	; KROK
  hex e4ebe8e400
 text_00b:	; #@0!
  hex f8f9d0f400
+text_00c:	;   where is ice cream?  
+ hex fafaf0e1deebdefae2ecfae2dcdefadcebdedae6f5fafa00
+text_00d:	;    you have murdered   
+ hex fafafaf2e8eefae1daefdefae6eeebdddeebdeddfafafa00
+text_00e:	;     all my children    
+ hex fafafafadae5e5fae6f2fadce1e2e5ddebdee7fafafafa00
+text_00f:	;   no general hospital  
+ hex fafae7e8fae0dee7deebdae5fae1e8ece9e2eddae5fafa00
+text_010:	;  the days of our lives 
+ hex faede1defadddaf2ecfae8dffae8eeebfae5e2efdeecfa00
+text_011:	;    now is my duty to   
+ hex fafafae7e8f0fae2ecfae6f2faddeeedf2faede8fafafa00
+text_012:	;   murder the universe  
+ hex fafae6eeebdddeebfaede1defaeee7e2efdeebecdefafa00

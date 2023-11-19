@@ -6,6 +6,9 @@
 ;	- scroll can lock when in phase state
 ;	- scroll both ways
 
+; state00 = scroll_x
+; state01 = scroll_y
+
 state_level_cam_update: subroutine
 
 ; SCROOOLLLLL
@@ -17,8 +20,8 @@ state_level_cam_update: subroutine
         lda wtf
         and #$01
         beq .scroll_update_done
-        inc scroll_x
-        lda scroll_x
+        inc state00
+        lda state00
         ; cmp #$ff ; for right-to-left
         bne .scroll_update_done
         inc scroll_ms

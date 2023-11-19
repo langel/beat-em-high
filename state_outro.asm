@@ -5,8 +5,8 @@ state_outro_init: subroutine
         sta state_update_id
         lda #state_outro_render_id
         sta state_render_id
-        lda #$00
-        sta state_sprite_0
+        lda #do_nothing_id
+        sta state_sprit0_id
         jsr render_disable
         
         lda #$00
@@ -50,7 +50,7 @@ state_outro_render: subroutine
         lda temp03
         sta PPU_DATA
         ; muck pattern data
-        ldy #$04
+        ldy #$0b
 .pattern_loop_big
         inc state00
         lda state00

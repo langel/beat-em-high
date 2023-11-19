@@ -52,12 +52,14 @@ nmi_handler: subroutine
         jmp jump_to_subroutine
 state_render_done:
         
-        bit PPU_STATUS
-        lda #$00
-        sta PPU_SCROLL
-        sta PPU_SCROLL
-        lda #CTRL_NMI|#CTRL_SPR_1000
+        lda scroll_ms
+        ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
+        bit PPU_STATUS
+        lda scroll_x
+        sta PPU_SCROLL
+        lda scroll_y
+        sta PPU_SCROLL
 	
         ; use HUD draW time for audio engine
 	BANK_CHANGE 2
@@ -65,8 +67,9 @@ state_render_done:
         
         jsr controller_read
         
+        
 sprite0_wait:
-	lda state_sprite_0
+	lda state_sprit0_id
         beq sprite_0_off
         
 	; wait for Sprite 0; SPRITE 0 WAIT TIME!!!
@@ -75,18 +78,11 @@ sprite0_wait:
         lda #$c0
 .wait1	bit PPU_STATUS
         beq .wait1
+        
+        lda state_sprit0_id
+        jsr jsr_to_subroutine
 sprite_0_off:
 
-        lda scroll_ms
-        and #$01
-        ora #CTRL_NMI|#CTRL_SPR_1000
-        sta PPU_CTRL
-        
-        bit PPU_STATUS
-        lda scroll_x
-        sta PPU_SCROLL
-        lda scroll_y
-        sta PPU_SCROLL  ; PPU scroll = $0000
         
 
 	BANK_CHANGE 0

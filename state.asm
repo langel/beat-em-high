@@ -31,7 +31,7 @@ jump_to_subroutine: subroutine
 do_nothing: subroutine        
         rts
         
-    	;  jump tables defined 
+ 	;  jump tables defined 
 utility_jump_table_offset           EQM	0
 do_nothing_id                       EQM	0
 state_title_jump_table_offset       EQM	1
@@ -45,11 +45,12 @@ state_intro_update_id               EQM	6
 state_level_jump_table_offset       EQM	7
 state_level_init_id                 EQM	7
 state_level_render_id               EQM	8
-state_level_update_id               EQM	9
-state_outro_jump_table_offset       EQM	10
-state_outro_init_id                 EQM	10
-state_outro_render_id               EQM	11
-state_outro_update_id               EQM	12
+state_level_sprite_0_id             EQM	9
+state_level_update_id               EQM	10
+state_outro_jump_table_offset       EQM	11
+state_outro_init_id                 EQM	11
+state_outro_render_id               EQM	12
+state_outro_update_id               EQM	13
 
 
 prime_jump_table_lo:
@@ -66,6 +67,7 @@ state_intro_jump_table_lo:
 state_level_jump_table_lo:
 	byte <state_level_init
 	byte <state_level_render
+	byte <state_level_sprite_0
 	byte <state_level_update
 state_outro_jump_table_lo:
 	byte <state_outro_init
@@ -86,6 +88,7 @@ state_intro_jump_table_hi:
 state_level_jump_table_hi:
 	byte >state_level_init
 	byte >state_level_render
+	byte >state_level_sprite_0
 	byte >state_level_update
 state_outro_jump_table_hi:
 	byte >state_outro_init
