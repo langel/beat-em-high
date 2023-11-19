@@ -2,12 +2,11 @@
 
 
 ent_player_update: subroutine
-	; XXX inc life each frame
-	inc $0301
-        inc $0311
 	lda ent_ram_offset
         beq ent_binny_update
         jmp ent_pando_update
+        
+        
         
 ent_player_render: subroutine
 	lda ent_ram_offset

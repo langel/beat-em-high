@@ -19,6 +19,7 @@ ent_krokw_init: subroutine
         sta ent_r0,x
 	rts
         
+        
 ent_krokw_update: subroutine
 	RNG0_NEXT
         lsr
@@ -32,6 +33,7 @@ ent_krokw_update: subroutine
 	inc ent_r0,x
 .not_around
 	jmp ent_update_return
+
 
 ent_krokw_render:
 	lda ent_r0,x

@@ -271,8 +271,19 @@ _ENT_SPRITE_CLEAR:
         inx
         bne .ent_sprite_clear_loop
 	rts
-        
-        
+     
+     
+ent_clear_ents: subroutine
+	lda #$ff
+        ldx #$0f
+.loop
+	ldy ent_ram_offset_table,x
+        sta ent_type,y
+        dex
+        bpl .loop
+	rts
+     
+     
 ent_reset_sorts: subroutine
 	ldy #$0f
 .loop

@@ -16,6 +16,7 @@ state_title_init: subroutine
         lda #$23
         ldx #$00
         jsr clear_attributes
+        jsr clear_sprites
         
         ; palette
 	PPU_SETADDR $3f00

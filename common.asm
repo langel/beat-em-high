@@ -53,6 +53,7 @@ clear_ram: subroutine
         bne .loop	; loop 256 times
         rts
         
+        
 clear_sprites: subroutine
 	lda #$ff
         ldx #$00
@@ -61,11 +62,6 @@ clear_sprites: subroutine
         inx
         bne .loop
         rts
-        ; other
-        hex 0f081a38
-        hex 0f0a391a
-        
-        hex 0f041536 ; pink krok
         
 
 ; wait for VSYNC to start

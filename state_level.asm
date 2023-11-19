@@ -11,8 +11,11 @@ state_level_00_palettes:
         ; pando
         hex 0f0c2130
         ; other
-        hex 0f081a38
-        hex 0f0a391a
+        hex 0f041536 ; pink krok
+        hex 0f081a38 ; yellow krok
+        hex 0f0f391a ; green krok
+        hex 0f0a391a ; all green krok
+        
         
 state_level_00_load_palettes: subroutine
 	PPU_SETADDR $3f00
@@ -45,6 +48,7 @@ state_level_init: subroutine
         lda #$23
         ldx #$00
         jsr clear_attributes
+        jsr clear_sprites
         
         jsr state_level_00_load_palettes
         
