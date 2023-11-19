@@ -34,6 +34,7 @@ state_intro_init: subroutine
         lda #$27
         ldx #$00
         jsr clear_attributes
+        jsr ents_system_init
         jsr clear_sprites
 
 ; palette loader

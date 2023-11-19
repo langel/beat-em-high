@@ -305,10 +305,10 @@ sine_table:
         
 text_space_pattern_id EQM $fa
 
-text_000:	; miau  iloveui  puke7  present
- hex e6e2daeefafae2e5e8efdeeee2fafae9eee4ded7fafae9ebdeecdee7ed00
-text_001:	; NesDEV COMPO 2023 Demo
- hex e7deecdddeeffadce8e6e9e8fad2d0d2d3fadddee6e800
+text_000:	; langel iloveui miau  present
+ hex e5dae7e0dee5fae2e5e8efdeeee2fae6e2daeefafae9ebdeecdee7ed00
+text_001:	; NesDEV COMPO 2023 Teaser
+ hex e7deecdddeeffadce8e6e9e8fad2d0d2d3faeddedaecdeeb00
 text_002:	; Binny, the Krok Gang
  hex dbe2e7e7f2f7faede1defae4ebe8e4fae0dae7e000
 text_003:	; stole all our best

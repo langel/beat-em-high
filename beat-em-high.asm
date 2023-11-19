@@ -79,17 +79,18 @@ char_tiles:
 	nop
 	include "ents_system.asm"
 	nop
-	include "ent_title_player.asm"
-	nop
-	include "ent_title_krok_circle.asm"
- 	nop
-	include "ent_title_krok_wave.asm"
-	nop
 	include "ent_pando.asm"
 	nop
 	include "ent_binny.asm"
 	nop
 	include "ent_krok.asm"
+	nop
+	include "ent_title_player.asm"
+	nop
+	include "ent_title_krok_circle.asm"
+ 	nop
+	include "ent_title_krok_wave.asm"
+
 
 
         

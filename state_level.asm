@@ -82,7 +82,7 @@ state_level_init: subroutine
         lda #$f0
         sta oam_ram_x
 
-		  jst ent_system_init
+	jsr ents_system_init
         jsr state_level_hud_init
         jsr state_level_plot_nametable1    
         jsr render_enable
@@ -131,7 +131,7 @@ state_level_render: subroutine
         
         
 state_level_update: subroutine
-	jsr state_level_ents_update
+	jsr ents_system_update
 	jsr state_level_hud_update
         jsr state_level_cam_update
 	jsr state_level_plot_update

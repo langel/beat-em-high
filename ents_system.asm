@@ -28,6 +28,10 @@ ent_sort2	= $0430
 ent_y_val	= $0440
 
 
+ent_ram_offset_table:
+	hex 00102030405060708090a0b0c0d0e0f0
+
+
 ent_player_id	EQM	$00
 ent_krok_id	EQM	$01
 ent_krokw_id	EQM	$02
@@ -37,7 +41,7 @@ ent_krokw_id	EQM	$02
 ;         add/remove ents 
 
 state_level_ents_init: subroutine
-	jsr ent_reset_sorts
+	jsr ents_system_init
         ; init types
         lda #$00
         sta temp00
@@ -324,5 +328,3 @@ ent_render_hi:
 	byte #>ent_player_render
         byte #>ent_krok_render
         byte #>ent_krokw_render
-ent_ram_offset_table:
-	hex 00102030405060708090a0b0c0d0e0f0

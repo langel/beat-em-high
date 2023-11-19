@@ -1,4 +1,17 @@
-
+state_title_palettes:
+	hex 0710271b
+        hex 073d2c20 
+        hex 073d1627 
+        hex 073d1939  
+        ; binny
+        hex 070f2437
+        ; pando
+        hex 070c2130
+        ; other
+        hex 07041536 ; pink krok
+        hex 07081a38 ; yellow krok
+        hex 070f391a ; green krok
+        hex 070a391a ; all green krok
 
 state_title_init: subroutine
         ; set state
@@ -17,17 +30,17 @@ state_title_init: subroutine
         ldx #$00
         jsr clear_attributes
         jsr clear_sprites
+	jsr ents_system_init
         
         ; palette
 	PPU_SETADDR $3f00
-        lda #$07
-        sta PPU_DATA
-        lda #$10
-        sta PPU_DATA
-        lda #$27
-        sta PPU_DATA
-        lda #$1b
-        sta PPU_DATA
+        ldy #0
+.palette_loop
+	lda state_title_palettes,y
+	sta PPU_DATA
+        iny		
+        cpy #32		
+	bne .palette_loop
         
     	; graphx to chr ram
         ; title logo
@@ -84,6 +97,7 @@ state_title_init: subroutine
 	ldy #$00
 .sprites_load_loop
 	lda (temp00),y
+        sta PPU_DATA
 	iny
 	bne .sprites_load_loop
 	inc temp01
@@ -133,7 +147,7 @@ state_title_init: subroutine
         ; DEMO
         lda #$22
         sta PPU_ADDR
-        lda #$05
+        lda #$04
         sta PPU_ADDR
         ldx #$00
 .demo_loop
@@ -143,6 +157,9 @@ state_title_init: subroutine
         inx
         jmp .demo_loop
 .demo_done
+
+	; ANIMATED ENTITIES
+        jsr state_level_ents_init
 
 	jsr render_enable
 	rts
@@ -159,5 +176,6 @@ state_title_update: subroutine
         beq .do_nothing
         jsr state_intro_init
 .do_nothing
+	jsr ents_system_update
 	rts
         
