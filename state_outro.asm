@@ -12,6 +12,7 @@ state_outro_init: subroutine
         lda #$00
         sta state00
         sta state01
+        sta state02
         
         jsr render_enable
 	rts
@@ -49,7 +50,7 @@ state_outro_render: subroutine
         lda temp03
         sta PPU_DATA
         ; muck pattern data
-        ldy #$0b
+        ldy #$04
 .pattern_loop_big
         inc state00
         lda state00
@@ -71,15 +72,30 @@ state_outro_render: subroutine
 	jmp state_render_done
 
 state_outro_update: subroutine
+	lda #$00
+        sta scroll_ms
 	ldx wtf
         lda sine_table,x
         lsr
         lsr
-        lsr
-        lsr
-        lsr
+        ;lsr
+        sec
+        sbc #$20
+        ;lsr
+        ;lsr
         sta scroll_x
-        adc #$80
+        ; get carry into ms
+        lda #$00
+        rol
+        eor #$01
+        sta scroll_ms
+        inc state02
+        lda state02
+        cmp #239
+        bcc .y_in_range
+        lda #0
+        sta state02
+.y_in_range
         sta scroll_y
 	rts
 

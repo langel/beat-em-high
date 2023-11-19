@@ -76,16 +76,17 @@ sprite0_wait:
 .wait1	bit PPU_STATUS
         beq .wait1
 sprite_0_off:
+
+        lda scroll_ms
+        and #$01
+        ora #CTRL_NMI|#CTRL_SPR_1000
+        sta PPU_CTRL
         
         bit PPU_STATUS
         lda scroll_x
         sta PPU_SCROLL
         lda scroll_y
         sta PPU_SCROLL  ; PPU scroll = $0000
-        lda scroll_ms
-        and #$01
-        ora #CTRL_NMI|#CTRL_SPR_1000
-        sta PPU_CTRL
         
 
 	BANK_CHANGE 0
