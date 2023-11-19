@@ -1,25 +1,25 @@
 
-ent_player_init: subroutine
+ent_title_player_init: subroutine
 	rts
 
 
-ent_player_update: subroutine
+ent_title_player_update: subroutine
 	lda ent_ram_offset
-        beq ent_binny_update
-        jmp ent_pando_update
+        beq ent_title_binny_update
+        jmp ent_title_pando_update
         
         
         
-ent_player_render: subroutine
+ent_title_player_render: subroutine
 	lda ent_ram_offset
         bne .do_pando
-        jmp ent_binny_render
+        jmp ent_title_binny_render
 .do_pando
-        jmp ent_pando_render
+        jmp ent_title_pando_render
         
         
         
-ent_binny_update: subroutine; BINNY
+ent_title_binny_update: subroutine; BINNY
 	; demo update
         lda #$02
         sta temp00
@@ -73,7 +73,7 @@ ent_binny_update: subroutine; BINNY
         
         
         
-ent_binny_render: subroutine
+ent_title_binny_render: subroutine
 	lda wtf
         and #$07
         bne .binny_not_next
@@ -115,7 +115,7 @@ ent_binny_render: subroutine
         
 ; PANDO
         
-ent_pando_update: subroutine
+ent_title_pando_update: subroutine
 	lda wtf
         and #$03
         bne .pando_not_advance
@@ -129,7 +129,7 @@ ent_pando_update: subroutine
 	jmp ent_update_return
 
 
-ent_pando_render: subroutine
+ent_title_pando_render: subroutine
 	inc ent_r3,x
         lda ponda_cycle
         and #$01

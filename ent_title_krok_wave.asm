@@ -1,43 +1,54 @@
 
-ent_krok_update: subroutine
-        
-; KROK
-	; sine pos
-        dec ent_r0,x
-        ;dec ent_r0,x
+ent_title_krok_wave_init: subroutine
+        lda #ent_title_krok_wave_id
+        sta ent_type,x
         ; x
-        ldx ent_r0+$20
-        lda sine_table,x
-        lsr
-        lsr
-        clc
-        adc #$38
-        ldx ent_ram_offset
+        RNG0_NEXT
         sta ent_x,x
         ; y
-        lda ent_r0,x
+        RNG0_NEXT
+        lsr
+        lsr
         clc
-        adc #$40
+        adc #$9e
+        sta ent_y,x
+        ; dir
+        RNG0_NEXT
+        RNG0_NEXT
+        RNG0_NEXT
+        sta ent_r0,x
+	rts
+        
+        
+ent_title_krok_wave_update: subroutine
+	RNG0_NEXT
+        lsr
+        and #$01
+        beq .not_forward
+	inc ent_x,x
+.not_forward
+	RNG0_NEXT
+        and #$01
+        bne .not_around
+	inc ent_r0,x
+.not_around
+	jmp ent_update_return
+
+
+ent_title_krok_wave_render:
+	lda ent_r0,x
         tax
         lda sine_table,x
-        sta temp01
-        lda #$15
-        sta temp00
-        jsr shift_divide
-        ldx ent_ram_offset
-        sta ent_r1,x
+        lsr
+        lsr
         clc
-        adc #$b4
+        adc #$a0
+        ldx ent_ram_offset
         sta ent_y,x
-        
-	jmp ent_update_return
-        
-        
-        
-        
-        
-ent_krok_render: subroutine
-        ; animation frame
+        lda ent_y,x
+        sec
+        sbc #$10
+        jsr sprite_4_set_y
         lda wtf
         lsr
         lsr
@@ -46,11 +57,12 @@ ent_krok_render: subroutine
         clc
 	adc #$c0
         jsr sprite_4_set_sprite
-        ; y position
-        lda ent_y,x
+	lda ent_x,x
         sec
-        sbc #$10
-        jsr sprite_4_set_y
+        sbc #$08
+        jsr sprite_4_set_x
+        lda #$03
+        jsr sprite_4_set_attr
         ; check view direction
         lda ent_x,x
         cmp $0312
@@ -60,7 +72,7 @@ ent_krok_render: subroutine
         sec
         sbc #$08
         jsr sprite_4_set_x
-        lda #$02
+        lda #$03
         jsr sprite_4_set_attr
         jmp .done
 .mirror
@@ -68,7 +80,8 @@ ent_krok_render: subroutine
         sec
         sbc #$08
         jsr sprite_4_set_x_mirror
-        lda #$42
+        lda #$43
         jsr sprite_4_set_attr
 .done
 	jmp ent_render_return
+        
