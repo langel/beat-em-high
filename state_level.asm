@@ -81,7 +81,8 @@ state_level_init: subroutine
         sta oam_ram_att
         lda #$f0
         sta oam_ram_x
-        jsr state_level_ents_init
+
+		  jst ent_system_init
         jsr state_level_hud_init
         jsr state_level_plot_nametable1    
         jsr render_enable

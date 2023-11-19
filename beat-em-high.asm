@@ -73,18 +73,23 @@ char_tiles:
         nop
 	include "state_level_cam.asm"
 	nop
-	include "state_level_ents.asm"
-	nop
 	include "state_level_hud.asm"
         nop
 	include "state_level_plot.asm"
 	nop
-	include "ent_player.asm"
+	include "ents_system.asm"
+	nop
+	include "ent_title_player.asm"
+	nop
+	include "ent_title_krok_circle.asm"
+ 	nop
+	include "ent_title_krok_wave.asm"
+	nop
+	include "ent_pando.asm"
+	nop
+	include "ent_binny.asm"
 	nop
 	include "ent_krok.asm"
-        nop
-	include "ent_krokw.asm"
-	nop
 
 
         

@@ -1,4 +1,6 @@
 
+ent_player_init: subroutine
+	rts
 
 
 ent_player_update: subroutine

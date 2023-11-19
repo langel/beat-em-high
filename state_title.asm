@@ -70,6 +70,25 @@ state_title_init: subroutine
         inc temp01
 	dex
         bne .char_load_loop
+
+	; sprites to chr ram
+	lda #<sprites_addr
+	sta temp00
+	lda #>sprites_addr
+	sta temp01
+	lda #$10
+	sta PPU_ADDR
+	lda #$00
+	sta PPU_ADDR
+	ldx #$10
+	ldy #$00
+.sprites_load_loop
+	lda (temp00),y
+	iny
+	bne .sprites_load_loop
+	inc temp01
+	dex
+	bne .sprites_load_loop
         
         ; tiles to nametable
 	BANK_CHANGE 0

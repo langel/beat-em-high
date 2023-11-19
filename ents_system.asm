@@ -98,8 +98,18 @@ state_level_ents_init: subroutine
 	rts
 
 
+ents_system_init: subroutine
+	jsr ents_reset_sorts
+	jsr ents_clear_slots
+	rts
 
-state_level_ents_update: subroutine      
+
+ents_system_spawn: subroutine
+	; a = ent type
+	rts
+
+
+ents_system_update: subroutine      
 
 _ENT_UPDATE
         lda #$00
@@ -273,7 +283,7 @@ _ENT_SPRITE_CLEAR:
 	rts
      
      
-ent_clear_ents: subroutine
+ents_clear_slots: subroutine
 	lda #$ff
         ldx #$0f
 .loop
@@ -284,7 +294,7 @@ ent_clear_ents: subroutine
 	rts
      
      
-ent_reset_sorts: subroutine
+ents_reset_sorts: subroutine
 	ldy #$0f
 .loop
 	tya
