@@ -20,12 +20,17 @@ state_level_cam_update: subroutine
         lda wtf
         and #$01
         beq .scroll_update_done
-        inc state00
         lda state00
+        clc
+        adc #$02
+        sta state00
         ; cmp #$ff ; for right-to-left
         bne .scroll_update_done
         inc scroll_ms
         lda scroll_ms
+        cmp #$03
+        bne .scroll_update_done
+        jsr state_outro_init
         and #$03
         sta scroll_ms
 .scroll_update_done

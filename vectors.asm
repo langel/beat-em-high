@@ -19,10 +19,10 @@ cart_start: subroutine
 ; reset unrom bank
         
         BANK_CHANGE 0
-        jsr state_level_init
-        ;jsr state_title_init
+        ;jsr state_level_init
+        jsr state_title_init
         ;jsr state_intro_init
-        jsr state_outro_init
+        ;jsr state_outro_init
         
         
 .endless
@@ -52,7 +52,7 @@ nmi_handler: subroutine
         jmp jump_to_subroutine
 state_render_done:
         
-        lda scroll_ms
+        lda scroll_nt
         ora #CTRL_NMI|#CTRL_SPR_1000
         sta PPU_CTRL
         bit PPU_STATUS

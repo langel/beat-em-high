@@ -9,10 +9,11 @@ state_outro_init: subroutine
         sta state_sprit0_id
         jsr render_disable
         
-        lda state00
+        lda #$00
         sta scroll_x
-        lda state01
         sta scroll_y
+        lda #$03
+        sta scroll_ms
         
         lda #$00
         sta state00	; monologue line
@@ -46,6 +47,11 @@ state_outro_init: subroutine
         iny
         bne .grafx_load_loop2
         inc temp01
+        
+        lda #ent_binny_id
+        ;jsr ents_system_spawn
+        lda #ent_pando_id
+        ;jsr ents_system_spawn
         
         lda #ent_boss_krok_id
         jsr ents_system_spawn
@@ -109,7 +115,7 @@ state_outro_render: subroutine
         sta state03
 	inc state02
 .not_next_text
-        lda #$20
+        lda #$24
         sta PPU_ADDR
         lda #$64
         sta PPU_ADDR
@@ -159,7 +165,7 @@ state_outro_supreme: subroutine
         lda temp03
         sta PPU_DATA
         ; muck pattern data
-        ldy #$0b
+        ldy #$0a
 .pattern_loop_big
         inc state00
         lda state00
@@ -207,11 +213,60 @@ state_outro_supreme: subroutine
         
 
 state_outro_update: subroutine
+	lda #$01
+        sta scroll_nt
+        lda #$03
+        sta scroll_ms
         lda state02
         cmp #$04
         beq .murder
 	jsr ents_system_update
 	rts
 .murder
+	lda #<arctang_velocity_1.25
+        sta arctang_velocity_lo
+	lda #>arctang_velocity_1.25
+        sta arctang_velocity_hi
+	lda #$00
+        sta state04 ; oam offset
+        sta state05 ; sprite counter
+.sprite_murder
+	; direction
+        lda state05
+        jsr arctang_bound_dir
+        sta temp02
+        ; y
+	ldy state04
+        lda $0200,y
+        sta temp00
+        lda $0600,y
+        sta temp01
+        jsr arctang_update_y
+        ldy state04
+        lda temp00
+        sta $0200,y
+        lda temp01
+        sta $0600,y
+        iny
+        iny
+        iny
+        sty state04
+        ; x
+        lda $0200,y
+        sta temp00
+        lda $0600,y
+        sta temp01
+        jsr arctang_update_x
+        ldy state04
+        lda temp00
+        sta $0200,y
+        lda temp01
+        sta $0600,y
+        inc state04
+        inc state05
+        lda state05
+        cmp #$40
+        bne .sprite_murder
+        
 	rts
 

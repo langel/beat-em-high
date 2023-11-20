@@ -59,11 +59,13 @@ boss_krok_chr:
         
 	include "dpcm.asm"
 	nop
-	include "common.asm"
-	nop
 	include "vectors.asm"
 	nop
+	include "common.asm"
+	nop
 	include "sprites.asm"
+	nop
+	include "arctang.asm"
 	nop
 	include "state.asm"
 	nop

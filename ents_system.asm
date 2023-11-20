@@ -10,7 +10,7 @@ ent_hp		= $0301
 ent_x		= $0302
 ent_y		= $0303
 ent_ms		= $0304
-ent_mx		= $0305
+ent_mx		= $0305 ; arctang direction
 ent_x_lo	= $0306
 ent_y_lo	= $0307
 ent_r0		= $0308
@@ -32,13 +32,8 @@ ent_ram_offset_table:
 	hex 00102030405060708090a0b0c0d0e0f0
 
 
-ent_player_id	EQM	$00
-ent_krok_id	EQM	$01
-ent_krokw_id	EQM	$02
 
-; TO DO
-;	- sort set management
-;         add/remove ents 
+
 
 state_level_ents_init: subroutine
 	jsr ents_system_init
@@ -132,6 +127,29 @@ ents_system_spawn: subroutine
         lda ent_init_hi,y
         sta temp03
         jmp (temp02)
+	rts
+        
+        
+ent_fix_y_visible: subroutine
+	; a = y position to check
+	; returns new y position in a
+        cmp #255-8
+        bcc .not_wrapped_from_top
+        sta temp00
+        lda #255
+        sec
+        sbc #240
+        sta temp01
+        lda temp00
+        sec
+        sbc temp01
+        rts
+.not_wrapped_from_top
+	cmp #240
+        bcc .not_wrapped_from_bottom
+        sec
+        sbc #240
+.not_wrapped_from_bottom
 	rts
 
 

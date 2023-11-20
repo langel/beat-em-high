@@ -63,6 +63,54 @@ clear_sprites: subroutine
         bne .loop
         rts
         
+        
+;;;; COLLISION DETECTOR
+;	
+;	works by putting object data into the following 0 page variables
+;
+;	collision_0_x	byte
+;	collision_0_y	byte
+;	collision_0_w	byte
+;	collision_0_h	byte
+;	collision_1_x	byte
+;	collision_1_y	byte
+;	collision_1_w	byte
+;	collision_1_h	byte
+;
+;	returns ff (true) or 00 (false) in accumulator
+; the detect_collision subroutine was moved to player_bullets.asm
+; saving over 12 cycles per usage
+
+collision_detect: subroutine
+	clc
+        lda collision_0_x
+        adc collision_0_w
+        bcs .no_collision ; make sure x+w is not less than x
+        cmp collision_1_x
+        bcc .no_collision
+        clc
+        lda collision_1_x
+        adc collision_1_w
+        cmp collision_0_x
+        bcc .no_collision
+        clc
+        lda collision_0_y
+        adc collision_0_h
+        cmp collision_1_y
+        bcc .no_collision
+        clc 
+        lda collision_1_y
+        adc collision_1_h
+        cmp collision_0_y
+        bcc .no_collision
+.collision
+	lda #$ff
+        rts
+.no_collision
+	lda #$00
+        rts
+
+
 
 ; wait for VSYNC to start
 wait_sync:

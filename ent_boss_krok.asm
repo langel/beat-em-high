@@ -34,6 +34,7 @@ ent_boss_krok_update: subroutine
 .bounce
 	cmp #$01
         bne .bounce2
+        
         lda state03
         tay
         lda sine_table,y
