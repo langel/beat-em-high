@@ -110,6 +110,28 @@ ents_system_init: subroutine
 
 ents_system_spawn: subroutine
 	; a = ent type
+        sta temp00
+        ldy #$00
+.loop
+	ldx ent_ram_offset_table,y
+        lda ent_type,x
+        cmp #$ff
+        beq .done
+        iny
+        cpy #$10
+        bne .loop
+        ; no empty slots
+        lda #$ff
+        rts
+.done
+	lda temp00
+        sta ent_type,x
+	tay
+        lda ent_init_lo,y
+        sta temp02
+        lda ent_init_hi,y
+        sta temp03
+        jmp (temp02)
 	rts
 
 

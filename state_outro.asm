@@ -9,29 +9,74 @@ state_outro_init: subroutine
         sta state_sprit0_id
         jsr render_disable
         
+        lda state00
+        sta scroll_x
+        lda state01
+        sta scroll_y
+        
         lda #$00
         sta state00
         sta state01
         sta state02
         
         ; load boss krok
-        
 	BANK_CHANGE 1
-	lda #<boss_krok_chr
-        sta temp00
-        lda #>boss_krok_chr
-        sta temp01
         lda #$1c
         sta PPU_ADDR
         lda #$00
         sta PPU_ADDR
         ldy #$00
 .grafx_load_loop
-	lda (temp00),y
+	lda boss_krok_chr,y
         sta PPU_DATA
         iny
         bne .grafx_load_loop
         inc temp01
+        ; do it twice?!?!
+	BANK_CHANGE 1
+        lda #$1c
+        sta PPU_ADDR
+        lda #$00
+        sta PPU_ADDR
+        ldy #$00
+.grafx_load_loop2
+	lda boss_krok_chr,y
+        sta PPU_DATA
+        iny
+        bne .grafx_load_loop2
+        inc temp01
+        
+        lda #ent_boss_krok_id
+        jsr ents_system_spawn
+        
+        ; some palette
+	PPU_SETADDR $3f19
+        lda #$0f
+        sta PPU_DATA
+        lda #$25
+        sta PPU_DATA
+        lda #$30
+        sta PPU_DATA
+        
+        ; clear hud tiles
+        lda #$20
+        sta PPU_ADDR
+        lda #$00
+        sta PPU_ADDR
+        lda #text_space_pattern_id
+        ldx #$60
+.hud_tile_loop
+	sta PPU_DATA
+        inx
+        bne .hud_tile_loop
+        ; clear hud sprites
+        ldy #$1f
+        lda #$ff
+.hud_sprite_loop
+	sta $0208,y
+        dey
+        bne .hud_sprite_loop
+	
         
         jsr render_enable
 	rts
