@@ -15,8 +15,8 @@ state_outro_init: subroutine
         sta scroll_y
         
         lda #$00
-        sta state00
-        sta state01
+        sta state00	; monologue line
+        sta state01	; monologue timer
         sta state02	; shot
         sta state03	; counter
         
@@ -52,11 +52,11 @@ state_outro_init: subroutine
         
         ; some palette
 	PPU_SETADDR $3f19
-        lda #$0c
+        lda #$0f ;#$0c
         sta PPU_DATA
         lda #$25
         sta PPU_DATA
-        lda #$36
+        lda #$30 ;#$36
         sta PPU_DATA
         
         ; clear hud tiles
@@ -78,13 +78,55 @@ state_outro_init: subroutine
         dey
         bne .hud_sprite_loop
 	
-        
         jsr render_enable
 	rts
         
-state_outro_render: subroutine
         
+        
+state_outro_render: subroutine
+        lda state02
+        cmp #$03
+        beq .monologue
+        cmp #$04
+        beq .not_monologue
 	jmp state_render_done
+.monologue
+	inc state01
+        lda state01
+        cmp #$60	; frames until next text
+        bne .not_next_text
+.next_text
+        lda #$00
+        sta state01
+        lda #$18
+        clc
+        adc state00
+        sta state00
+        cmp #$98
+        bcc .not_next_text
+.text_done
+	lda #$00
+        sta state03
+	inc state02
+.not_next_text
+        lda #$20
+        sta PPU_ADDR
+        lda #$64
+        sta PPU_ADDR
+        ldx #$18
+	lda state00
+        tay
+.text_loop
+        lda text_00c,y
+        sta PPU_DATA
+        iny
+        dex
+        bne .text_loop
+	jmp state_render_done
+.not_monologue
+        
+        
+state_outro_supreme: subroutine
 	; muck up nametable
 	lda wtf
         and #$03
@@ -135,12 +177,6 @@ state_outro_render: subroutine
         dey
         bne .pattern_loop_big
         
-        
-	jmp state_render_done
-
-state_outro_update: subroutine
-	jsr ents_system_update
-	rts
 	lda #$00
         sta scroll_ms
 	ldx wtf
@@ -158,13 +194,24 @@ state_outro_update: subroutine
         rol
         eor #$01
         sta scroll_ms
-        inc state02
-        lda state02
+        inc state03
+        lda state03
         cmp #239
         bcc .y_in_range
         lda #0
-        sta state02
+        sta state03
 .y_in_range
         sta scroll_y
+        
+	jmp state_render_done
+        
+
+state_outro_update: subroutine
+        lda state02
+        cmp #$04
+        beq .murder
+	jsr ents_system_update
+	rts
+.murder
 	rts
 
