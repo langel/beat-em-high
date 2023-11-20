@@ -1,15 +1,86 @@
 
+ent_boss_krok_base_x	EQM #$aa
+ent_boss_krok_base_y	EQM #$ac
 
 
 ent_boss_krok_init: subroutine
-	lda #$a0
+	lda #ent_boss_krok_base_x
         sta ent_x,x
-        lda #$a7
+        lda #ent_boss_krok_base_y
         sta ent_y,x
+        lda #$db
+        sta state03
 	rts
         
 ent_boss_krok_update: subroutine
         ; x = ent_ram_offset
+        lda state02
+        bne .bounce
+.fall
+	lda state03
+        tay
+        lda sine_table,y
+        asl
+        sta temp00
+        lda #ent_boss_krok_base_y
+        clc
+        adc temp00
+        sta ent_y,x
+        inc state03
+        bne .done
+        lda #$00
+        sta state03
+        inc state02
+.bounce
+	cmp #$01
+        bne .bounce2
+        lda state03
+        tay
+        lda sine_table,y
+        sec
+        sbc #$80
+        lsr
+        lsr
+        sta temp00
+        lda #ent_boss_krok_base_y
+        sec
+        sbc temp00
+        sta ent_y,x
+        inc state03
+        inc state03
+        inc state03
+        inc state03
+        lda state03
+        cmp #$80
+        bne .done
+        lda #$00
+        sta state03
+        inc state02
+.bounce2
+	cmp #$02
+        bne .done
+        lda state03
+        tay
+        lda sine_table,y
+        sec
+        sbc #$80
+        lsr
+        lsr
+        lsr
+        sta temp00
+        lda #ent_boss_krok_base_y
+        sec
+        sbc temp00
+        sta ent_y,x
+        inc state03
+        inc state03
+        inc state03
+        inc state03
+        lda state03
+        cmp #$80
+        bne .done
+        inc state02
+.done
         ; animate head y
 	inc ent_r0,x
 	inc ent_r0,x

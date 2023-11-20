@@ -17,7 +17,8 @@ state_outro_init: subroutine
         lda #$00
         sta state00
         sta state01
-        sta state02
+        sta state02	; shot
+        sta state03	; counter
         
         ; load boss krok
 	BANK_CHANGE 1
@@ -51,11 +52,11 @@ state_outro_init: subroutine
         
         ; some palette
 	PPU_SETADDR $3f19
-        lda #$0f
+        lda #$0c
         sta PPU_DATA
         lda #$25
         sta PPU_DATA
-        lda #$30
+        lda #$36
         sta PPU_DATA
         
         ; clear hud tiles
