@@ -22,7 +22,7 @@ state_level_cam_update: subroutine
         beq .scroll_update_done
         lda state00
         clc
-        adc #$02
+        adc #$01
         sta state00
         ; cmp #$ff ; for right-to-left
         bne .scroll_update_done

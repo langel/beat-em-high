@@ -77,10 +77,10 @@ ent_title_binny_render: subroutine
 	lda wtf
         and #$07
         bne .binny_not_next
-        inc binny_cycle
+        inc ent_r0,x
 .binny_not_next
 
-        lda binny_cycle
+        lda ent_r0,x
         and #$01
         clc
         adc #$06
@@ -124,14 +124,14 @@ ent_title_pando_update: subroutine
 	lda wtf
         and #$07
         bne .pando_not_next
-        inc ponda_cycle
+        inc ent_r0,x
 .pando_not_next
 	jmp ent_update_return
 
 
 ent_title_pando_render: subroutine
 	inc ent_r3,x
-        lda ponda_cycle
+        lda ent_r0,x
         and #$01
         clc
         adc #$06

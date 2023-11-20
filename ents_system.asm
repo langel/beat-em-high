@@ -35,68 +35,6 @@ ent_ram_offset_table:
 
 
 
-state_level_ents_init: subroutine
-	jsr ents_system_init
-        ; init types
-        lda #$00
-        sta temp00
-        ldy #$ff
-.type_clear
-	tax
-        lda #$ff
-	sta ent_type,x
-        lda #$10
-        clc
-        adc temp00
-        sta temp00
-        bne .type_clear
-        ; init y sort
-        lda #$ff
-        ldx #$0f
-.y_clear
-	;sta $0400,x
-        dex
-        bpl .y_clear
-        
-; SETUP 3 ENTS for devving :D/
-        lda #ent_title_player_id
-        sta ent_type+$00
-        sta ent_type+$10
-        lda #ent_title_krok_elipse_id
-        sta ent_type+$20
-	; binny init pos
-	lda #$33
-        sta ent_x
-        sta ent_r0
-        lda #$b0
-        sta ent_y
-        sta ent_r1
-        ; pando init post
-        lda #$58
-        sta ent_x+$10
-        sta ent_r0+$10
-        lda #$c0
-        sta ent_y+$10
-        sta ent_r1+$10
-; LET's TEST SOME STUFF
-.do_moar_ents
-	lda #$09
-        sta temp00
-.load_moar_ents_loop
-        lda temp00
-        asl
-        asl
-        asl
-        asl
-        clc
-        adc #$30
-        tax
-        jsr ent_title_krok_wave_init
-	dec temp00
-        bne .load_moar_ents_loop
-	rts
-
-
 ents_system_init: subroutine
 	jsr ents_reset_sorts
 	jsr ents_clear_slots

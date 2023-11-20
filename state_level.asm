@@ -58,9 +58,6 @@ state_level_init: subroutine
         lda #$00
         sta state00
         sta state01
-        lda #$ff
-        sta ent_hp
-        sta ent_hp+$10
         
 ; grafx to chr ram
 	BANK_CHANGE 1
@@ -96,6 +93,11 @@ state_level_init: subroutine
         jsr state_level_hud_init
         jsr state_level_plot_nametable1    
         jsr render_enable
+        
+        
+	lda #ent_pando_id
+        jsr ents_system_spawn
+        
 	rts
 
 

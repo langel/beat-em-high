@@ -50,6 +50,10 @@ state_intro_init: subroutine
         lda #$00
         sta state00
         sta state01
+        sta state04
+        sta state05
+        sta state06
+        sta state07
         lda #$ef
         sta scroll_y
         
@@ -131,6 +135,7 @@ state_intro_update: subroutine
 .step04
 	cmp #$04
         bne .step05
+        jsr state_intro_shot2_animate
         jmp switch_done
 .step05
 	cmp #$05
@@ -230,4 +235,54 @@ state_intro_shot2_init: subroutine
         PPU_PLOT_TEXT $21ce,text_00a
         PPU_PLOT_TEXT $220e,text_00b
         jsr render_enable
+	rts
+        
+        
+state_intro_shot2_animate: subroutine
+.state04_check
+	lda state00
+        cmp #$80
+        bcc .state6_check
+.state4
+	inc state04
+        lda state05
+        clc
+        adc state04
+        sta state05
+	;pando
+        ldy #$00
+        lda #$60
+        jsr sprite_6_set_sprite
+        lda #$01
+        jsr sprite_6_set_attr
+	lda #$30
+        jsr sprite_6_set_x
+	lda #$60
+        sec
+        sbc state05
+        jsr sprite_6_set_y
+.state6_check
+	lda state00
+        cmp #$60
+        bcs .state6
+        rts
+.state6
+	inc state06
+        lda state07
+        clc
+        adc state06
+        sta state07
+        ;binny
+        ldy #$20
+        lda #$00
+        jsr sprite_6_set_sprite
+        lda #$40
+        jsr sprite_6_set_attr
+	lda #$c0
+        jsr sprite_6_set_x_mirror
+	lda #$60
+	lda #$60
+        sec
+        sbc state07
+        jsr sprite_6_set_y
 	rts

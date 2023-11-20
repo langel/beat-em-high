@@ -27,6 +27,8 @@ state02 byte
 state03 byte
 state04 byte
 state05 byte
+state06 byte
+state07 byte
 
 ent_ram_offset	byte
 ent_oam_offset	byte
@@ -55,6 +57,3 @@ map_ppu_hi byte
 
 controls		byte
 controls_debounced	byte
-
-binny_cycle byte
-ponda_cycle byte
