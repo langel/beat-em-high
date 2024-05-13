@@ -19,10 +19,11 @@ cart_start: subroutine
 ; reset unrom bank
         
         BANK_CHANGE 0
-        jsr state_title_init
+        ;jsr state_title_init
         ;jsr state_intro_init
-        ;jsr state_level_init
+        jsr state_level_init
         ;jsr state_outro_init
+        ;jsr state_demo_init
         
         
 .endless

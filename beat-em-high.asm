@@ -68,6 +68,8 @@ boss_krok_chr:
 	include "arctang.asm"
 	nop
 	include "state.asm"
+        nop
+	include "state_demo.asm"
 	nop
 	include "state_title.asm"
 	nop

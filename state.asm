@@ -51,6 +51,7 @@ state_outro_jump_table_offset       EQM	11
 state_outro_init_id                 EQM	11
 state_outro_render_id               EQM	12
 state_outro_update_id               EQM	13
+state_demo_update_id                EQM 14
 
 
 prime_jump_table_lo:
@@ -73,6 +74,8 @@ state_outro_jump_table_lo:
 	byte <state_outro_init
 	byte <state_outro_render
 	byte <state_outro_update
+state_demo_jump_Table_lo:
+	byte <state_demo_update
 
 prime_jump_table_hi:
 utility_jump_table_hi:
@@ -94,3 +97,5 @@ state_outro_jump_table_hi:
 	byte >state_outro_init
 	byte >state_outro_render
 	byte >state_outro_update
+state_demo_jump_Table_hi:
+	byte >state_demo_update
