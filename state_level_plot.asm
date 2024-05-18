@@ -3,8 +3,6 @@ state_level_plot_nametable1: subroutine
 ; FILL NAMETABLES WITH MAP
 	BANK_CHANGE 0
 	lda #<map_0_tiles
-        clc
-        adc #$04
         sta temp00
 	lda #>map_0_tiles
         sta temp01

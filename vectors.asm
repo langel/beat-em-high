@@ -21,9 +21,9 @@ cart_start: subroutine
         BANK_CHANGE 0
         ;jsr state_title_init
         ;jsr state_intro_init
-        jsr state_level_init
+        ;jsr state_level_init
         ;jsr state_outro_init
-        ;jsr state_demo_init
+        jsr state_demo_init
         
         
 .endless

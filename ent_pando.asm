@@ -8,9 +8,9 @@ ent_pando_init: subroutine
 	; full health
         lda #$ff
         sta ent_hp,x
-        lda #$58
+        lda #$67
         sta ent_x,x
-        lda #$a4
+        lda #$c0
         sta ent_y,x
 	rts
         

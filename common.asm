@@ -165,7 +165,6 @@ distance: subroutine
 ; but johnybot on nesdev discord said:
 ; hi + (lo >> 2) + (lo >> 4) + (lo >> 6) 
 ; seems like a much better approximation for 8 bit ASM
-        rts
 	rts
 
 

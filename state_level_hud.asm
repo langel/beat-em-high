@@ -29,23 +29,23 @@ state_level_hud_init: subroutine
         iny
         cpx #$48+22
         bne .hud_life_loop
-; BINNY HEAD SPRITE
-        ldy #$08
-        lda #$06
-        jsr sprite_4_set_sprite
-        lda #$00
-        jsr sprite_4_set_attr
-        lda #$12
-        jsr sprite_4_set_x
-        lda #$0e
-        jsr sprite_4_set_y
 ; PANDO HEAD SPRITE
         ldy #$18
         lda #$66
         jsr sprite_4_set_sprite
         lda #$01
         jsr sprite_4_set_attr
-        lda #$93
+        lda #$12
+        jsr sprite_4_set_x
+        lda #$0e
+        jsr sprite_4_set_y
+; BINNY HEAD SPRITE
+        ldy #$08
+        lda #$06
+        jsr sprite_4_set_sprite
+        lda #$00
+        jsr sprite_4_set_attr
+        lda #$92
         jsr sprite_4_set_x
         lda #$0e
         jsr sprite_4_set_y
@@ -54,8 +54,8 @@ state_level_hud_init: subroutine
 hud_tile_table:
         hex 00adaeaeaeaeaeaeaeaeaeaeaeaeaf00
         hex 00adaeaeaeaeaeaeaeaeaeaeaeaeaf00
-        hex 00bd000000dbe2e7e7f20000f1d0bf00
         hex 00bd000000e9dae7dde80000f1d0bf00
+        hex 00bd000000dbe2e7e7f20000f1d0bf00
         hex 00bd000000cbcbcbcbcbcbcbcbcbbf00
         hex 00bd000000cbcbcbcbcbcbcbcbcbbf00
         hex 00cdcececececececececececececf00

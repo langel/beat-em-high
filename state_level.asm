@@ -97,7 +97,19 @@ state_level_init: subroutine
         
 	lda #ent_pando_id
         jsr ents_system_spawn
+        lda #$a0
+        sta ent_hp
 	lda #ent_binny_id
+        jsr ents_system_spawn
+        lda #$10
+        sta ent_hp+16
+        lda #ent_krok_id 
+        jsr ents_system_spawn
+        lda #ent_krok_id 
+        jsr ents_system_spawn
+        lda #ent_krok_id 
+        jsr ents_system_spawn
+        lda #ent_krok_id 
         jsr ents_system_spawn
         
 	rts
