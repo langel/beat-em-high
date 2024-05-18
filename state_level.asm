@@ -111,6 +111,8 @@ state_level_init: subroutine
         jsr ents_system_spawn
         lda #ent_krok_id 
         jsr ents_system_spawn
+        lda #ent_krok_victim_id
+        jsr ents_system_spawn
         
 	rts
 

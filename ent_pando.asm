@@ -8,13 +8,22 @@ ent_pando_init: subroutine
 	; full health
         lda #$ff
         sta ent_hp,x
-        lda #$67
+        ;lda #$63
+        lda #$5b
         sta ent_x,x
-        lda #$c0
+        ;lda #$c1
+        lda #$a9
         sta ent_y,x
 	rts
         
+ent_pando_attack_cycle:
+	hex 66 68 6a 6a
+	hex 66 68 6a 6a
+	hex 66 68 6a 6a
+	hex 90 92 94 94
+        
 ent_pando_update: subroutine
+#IF 0
         lda state_update_id
         cmp #state_outro_update_id
         beq .not_walking
@@ -84,10 +93,110 @@ ent_pando_update: subroutine
         dec ent_r2,x
 .not_kick
 .done
+#ENDIF
+; frame  00    = reset x pos
+	lda wtf
+        bne .dont_reset
+        ;lda #$63
+        lda #$5c
+        sta ent_x,x
+        ;lda #$c1
+        lda #$a9
+        sta ent_y,x
+.dont_reset
+; frames 68-7f = slowly move right
+	lda wtf
+        cmp #$68
+        bcc .dont_advance
+        cmp #$80
+        bcs .dont_advance
+        and #$01
+        bne .dont_advance
+        inc ent_x,x
+.dont_advance
+; frames 00-80 = attack anim
+	lda wtf
+        cmp #$81
+        bcs .attack_done
+        lsr
+        lsr
+        lsr
+        and #$0f
+        tay
+        lda ent_pando_attack_cycle,y
+        sta ent_r3,x
+        lda wtf
+        cmp #$63
+        bcs .attack_done
+        jmp .done
+.attack_done
+	lda wtf
+        cmp #$d0
+        bcc .done
+.start_walk
+	lda wtf
+        lsr
+        lsr
+        lsr
+        and #$01
+        bne .walk01
+.walk00
+        lda #$60
+        sta ent_r3,x
+        jmp .walk_move
+.walk01
+        lda #$6c
+        sta ent_r3,x
+.walk_move
+	lda wtf
+        and #$03
+        beq .move_right
+.move_up
+	clc
+        adc #$01
+        cmp #$02
+        bne .done
+	dec ent_y,x
+	jmp .done
+.move_right
+	inc ent_x,x
+.done
 	jmp ent_update_return
         
         
 ent_pando_render: subroutine
+        lda ent_r3,x
+        jsr sprite_6_set_sprite
+        lda ent_r3,x
+        cmp #$6a
+        bne .not_fist
+.has_fist
+	lda #$e0
+	sta oam_ram_spr+$18,y
+        lda ent_x,x
+        clc
+        adc #$0f
+        sta oam_ram_x+$18,y
+        lda ent_y,x
+        clc
+        adc #$0a
+        sta $450
+        sta oam_ram_y+$18,y
+        lda #$01
+        sta oam_ram_att+$18,y
+        jmp .fist_done
+.not_fist
+	lda #$ff
+        sta $450
+        sta oam_ram_y+18,y
+.fist_done
+        lda #$01
+        jsr sprite_6_set_attr
+	lda ent_x,x
+        jsr sprite_6_set_x
+	lda ent_y,x
+        jsr sprite_6_set_y
+#IF 0
         lda ent_r3,x
         jsr sprite_6_set_sprite
         lda #$01
@@ -100,4 +209,5 @@ ent_pando_render: subroutine
         sec
         sbc #$18
         jsr sprite_6_set_y
+#ENDIF
 	jmp ent_render_return

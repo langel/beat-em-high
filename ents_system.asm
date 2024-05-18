@@ -296,8 +296,9 @@ ent_boss_krok_id                    EQM	3
 ent_title_player_id                 EQM	4
 ent_title_krok_elipse_id            EQM	5
 ent_title_krok_wave_id              EQM	6
+ent_krok_victim_id                  EQM 7
 ent_size:
-	byte 24,24,16,64,24,16,16
+	byte 28,24,16,64,24,16,16,16
 ent_init_lo:
 	byte #<ent_pando_init
 	byte #<ent_binny_init
@@ -306,6 +307,7 @@ ent_init_lo:
 	byte #<ent_title_player_init
 	byte #<ent_title_krok_elipse_init
 	byte #<ent_title_krok_wave_init
+        byte #<ent_krok_victim_init
 ent_init_hi:
 	byte #>ent_pando_init
 	byte #>ent_binny_init
@@ -314,6 +316,7 @@ ent_init_hi:
 	byte #>ent_title_player_init
 	byte #>ent_title_krok_elipse_init
 	byte #>ent_title_krok_wave_init
+        byte #>ent_krok_victim_init
 ent_update_lo:
 	byte #<ent_pando_update
 	byte #<ent_binny_update
@@ -322,6 +325,7 @@ ent_update_lo:
 	byte #<ent_title_player_update
 	byte #<ent_title_krok_elipse_update
 	byte #<ent_title_krok_wave_update
+        byte #<ent_krok_victim_update
 ent_update_hi:
 	byte #>ent_pando_update
 	byte #>ent_binny_update
@@ -330,6 +334,7 @@ ent_update_hi:
 	byte #>ent_title_player_update
 	byte #>ent_title_krok_elipse_update
 	byte #>ent_title_krok_wave_update
+        byte #>ent_krok_victim_update
 ent_render_lo:
 	byte #<ent_pando_render
 	byte #<ent_binny_render
@@ -338,6 +343,7 @@ ent_render_lo:
 	byte #<ent_title_player_render
 	byte #<ent_title_krok_elipse_render
 	byte #<ent_title_krok_wave_render
+        byte #<ent_krok_victim_render
 ent_render_hi:
 	byte #>ent_pando_render
 	byte #>ent_binny_render
@@ -346,3 +352,4 @@ ent_render_hi:
 	byte #>ent_title_player_render
 	byte #>ent_title_krok_elipse_render
 	byte #>ent_title_krok_wave_render
+        byte #>ent_krok_victim_render

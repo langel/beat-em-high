@@ -8,12 +8,14 @@ ent_krok_init: subroutine
 	rts
         
 ent_krok_update: subroutine
+	lda wtf
+        bne .skip_pos
 	; mult sine position
         lda ent_ram_offset
         clc
-        adc #$f
+        adc #$0f
         sta temp00
-        lda #$e0
+        lda #$f0
         sta temp01
         jsr shift_multiply
         ldx ent_ram_offset
@@ -21,7 +23,7 @@ ent_krok_update: subroutine
         tay
         lda sine_table,y
         clc
-        adc #$c0
+        adc #$c4
         sta ent_x,x
         lda temp01
         clc
@@ -30,8 +32,9 @@ ent_krok_update: subroutine
         lda sine_table,y
         lsr
         clc
-        adc #$6a
+        adc #$6e
         sta ent_y,x
+.skip_pos
 	jmp ent_update_return
         
 ent_krok_render: subroutine
@@ -56,6 +59,61 @@ ent_krok_render: subroutine
         jsr sprite_4_set_x_mirror
         lda ent_y,x
         jsr sprite_4_set_y
-        lda #$43
+        lda #$03
+        jsr sprite_4_set_attr_mirror
+        lda wtf 
+        cmp #$90
+        bcc .done
+        lda ent_ram_offset
+        lsr
+        lsr
+        lsr
+        lsr
+        cmp #$05
+        beq .next_fighter
+        lda wtf
+        asl 
+        sta temp00
+        txa
+        asl
+        asl
+        clc
+        adc temp00
+        and #$10
+        beq .done
+	lda ent_x,x
+        jsr sprite_4_set_x
+        lda #$03
         jsr sprite_4_set_attr
+        jmp .done
+.next_fighter
+        lda wtf
+        lsr
+        lsr
+        and #$01
+        bne .walk_sprite
+	lda #$c0
+        jsr sprite_4_set_sprite
+        jmp .walk_check
+.walk_sprite
+	lda #$ca
+        jsr sprite_4_set_sprite
+.walk_check
+	lda wtf
+        and #$03
+        beq .move_left
+.move_down
+	clc
+        adc #$01
+        cmp #$02
+        bne .done
+	inc ent_y,x
+        lda ent_y,x
+        jsr sprite_4_set_y
+	jmp .done
+.move_left
+	dec ent_x,x
+	lda ent_x,x
+        jsr sprite_4_set_x_mirror
+.done
 	jmp ent_render_return

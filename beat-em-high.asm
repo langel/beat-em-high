@@ -93,6 +93,8 @@ boss_krok_chr:
 	nop
 	include "ent_krok.asm"
         nop
+	include "ent_krok_victim.asm"
+        nop
 	include "ent_boss_krok.asm"
 	nop
 	include "ent_title_player.asm"

@@ -21,6 +21,16 @@ sprite_4_set_attr: subroutine
         sta oam_ram_att+$08,y
         sta oam_ram_att+$0c,y
         rts
+        
+sprite_4_set_attr_mirror: subroutine
+	; a = attribute value
+        ; y = oam ram offset
+        ora #$40
+        sta oam_ram_att+$00,y
+        sta oam_ram_att+$04,y
+        sta oam_ram_att+$08,y
+        sta oam_ram_att+$0c,y
+        rts
 
 sprite_4_set_sprite: subroutine
 	; a = top left tile id
